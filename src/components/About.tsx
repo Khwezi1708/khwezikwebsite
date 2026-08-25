@@ -144,8 +144,8 @@ function AboutImageMotion({
     <motion.figure
       ref={ref}
       className={className}
-      initial={{ opacity: 0, x: fromX, clipPath: 'inset(8% 8% 8% 8%)' }}
-      whileInView={{ opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }}
+      initial={{ opacity: 0, x: fromX }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: false, amount: 0.35 }}
       transition={{ duration: 1.05, ease: easeOut }}
     >

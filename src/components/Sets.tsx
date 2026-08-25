@@ -386,8 +386,8 @@ export function Sets() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Watch ${set.title} on YouTube`}
-                  initial={{ opacity: 0, clipPath: 'inset(8% 8% 8% 8%)' }}
-                  whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   viewport={viewport}
                   transition={{
                     duration: 0.85,

@@ -261,8 +261,8 @@ export function Press() {
 
         <motion.figure
           className="press__visual"
-          initial={{ opacity: 0, x: 36, clipPath: 'inset(10% 10% 10% 10%)' }}
-          whileInView={{ opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }}
+          initial={{ opacity: 0, x: 36 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={viewport}
           transition={{ duration: 1, ease: easeOut, delay: 0.12 }}
         >

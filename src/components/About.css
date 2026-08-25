@@ -113,7 +113,7 @@
 .about__feature-visual {
   margin: 0;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .about__visual {
@@ -126,6 +126,7 @@
 .about__feature-visual img {
   display: block;
   width: 100%;
+  border-radius: 8px;
 }
 
 .about__visual img {
