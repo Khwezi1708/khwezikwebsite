@@ -17,6 +17,12 @@ npm run build
 npm run preview
 ```
 
+## Deploy
+
+GitHub Pages deploys automatically from `main` via Actions.
+
+Custom domain: **khwezik.com** (`public/CNAME`).
+
 ## Assets
 
 - Hero video: `public/video/hero.mov`
