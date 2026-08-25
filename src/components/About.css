@@ -113,7 +113,6 @@
 .about__feature-visual {
   margin: 0;
   overflow: hidden;
-  will-change: transform;
 }
 
 .about__visual {
@@ -126,7 +125,6 @@
 .about__feature-visual img {
   display: block;
   width: 100%;
-  will-change: transform;
 }
 
 .about__visual img {
@@ -160,6 +158,17 @@
   .about__visual {
     position: relative;
     top: auto;
+    min-height: 0;
+  }
+
+  .about__visual img {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    height: auto;
+  }
+
+  .about__headline span {
+    white-space: normal;
   }
 
   /* Copy before images on mobile */

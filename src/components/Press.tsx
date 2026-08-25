@@ -1,12 +1,13 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { pressPack } from '../data/contact'
+import { useMotionProfile } from '../hooks/useMotionProfile'
 import './Press.css'
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
 export function Press() {
-  const reduceMotion = useReducedMotion()
+  const { soft, viewport } = useMotionProfile()
   const [open, setOpen] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
@@ -56,10 +57,10 @@ export function Press() {
       <div className="press__layout">
         <motion.div
           className="press__panel"
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: soft ? 14 : 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.35 }}
-          transition={{ duration: 0.8, ease: easeOut }}
+          viewport={viewport}
+          transition={{ duration: soft ? 0.5 : 0.8, ease: easeOut }}
         >
           <p className="section-label">05 · Press</p>
           <h2 className="section-title">Press pack</h2>
@@ -79,17 +80,21 @@ export function Press() {
         <motion.figure
           className="press__visual"
           initial={
-            reduceMotion
-              ? { opacity: 0 }
+            soft
+              ? { opacity: 0, y: 16 }
               : { opacity: 0, x: 36, clipPath: 'inset(10% 10% 10% 10%)' }
           }
           whileInView={
-            reduceMotion
-              ? { opacity: 1 }
+            soft
+              ? { opacity: 1, y: 0 }
               : { opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }
           }
-          viewport={{ once: false, amount: 0.35 }}
-          transition={{ duration: 1, ease: easeOut, delay: 0.12 }}
+          viewport={viewport}
+          transition={{
+            duration: soft ? 0.5 : 1,
+            ease: easeOut,
+            delay: soft ? 0 : 0.12,
+          }}
         >
           <img
             src="/images/press-socials.jpg"
@@ -113,7 +118,7 @@ export function Press() {
           >
             <motion.form
               className="press__modal-card"
-              initial={reduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 }}
+              initial={soft ? false : { opacity: 0, y: 16, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.98 }}
               transition={{ duration: 0.3, ease: easeOut }}

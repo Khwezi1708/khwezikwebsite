@@ -22,6 +22,14 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
+@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+  .nav--solid {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(42, 26, 22, 0.97);
+  }
+}
+
 .nav a {
   pointer-events: auto;
 }
@@ -61,6 +69,28 @@
 
 .nav__links a:hover {
   color: var(--coral);
+}
+
+@media (max-width: 720px) {
+  .nav__links {
+    gap: 0.55rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    max-width: min(68vw, 16rem);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .nav__links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav__links a {
+    flex: 0 0 auto;
+    padding: 0.35rem 0;
+  }
 }
 
 @media (max-width: 520px) {

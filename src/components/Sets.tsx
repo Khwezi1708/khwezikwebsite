@@ -8,6 +8,7 @@ import {
 } from 'react'
 import { mixcloudEmbed, soundcloudEmbed } from '../data/contact'
 import { genres, type GenreKey } from '../data/sets'
+import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import './Sets.css'
 
@@ -140,6 +141,7 @@ function YouTubeThumb({ id }: { id: string }) {
 
 export function Sets() {
   const [active, setActive] = useState<GenreKey>('amapiano')
+  const { soft, viewport } = useMotionProfile()
   const [expanded, setExpanded] = useState(false)
 
   const playlist = useMemo(
@@ -161,10 +163,12 @@ export function Sets() {
       <motion.div
         className="sets__mark"
         aria-hidden="true"
-        initial={{ opacity: 0, filter: 'blur(14px)' }}
-        whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-        viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+        initial={soft ? { opacity: 0 } : { opacity: 0, filter: 'blur(14px)' }}
+        whileInView={
+          soft ? { opacity: 1 } : { opacity: 1, filter: 'blur(0px)' }
+        }
+        viewport={viewport}
+        transition={{ duration: soft ? 0.5 : 1.05, ease: [0.22, 1, 0.36, 1] }}
       >
         <BrandMark variant="star" className="sets__star" />
       </motion.div>
@@ -172,10 +176,10 @@ export function Sets() {
       <div className="sets__header">
         <motion.div
           className="sets__copy"
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: soft ? 14 : 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          viewport={viewport}
+          transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="section-label">02 · Sets</p>
           <h2 className="section-title">Listen. Groove. Vibe.</h2>
@@ -231,11 +235,11 @@ export function Sets() {
               <motion.li
                 key={set.id}
                 className="set"
-                initial={{ opacity: 0, y: 32 }}
+                initial={{ opacity: 0, y: soft ? 16 : 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
+                viewport={viewport}
                 transition={{
-                  duration: 0.65,
+                  duration: soft ? 0.45 : 0.65,
                   ease: [0.22, 1, 0.36, 1],
                   delay: Math.min(index * 0.06, 0.3),
                 }}
@@ -251,11 +255,19 @@ export function Sets() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Watch ${set.title} on YouTube`}
-                  initial={{ opacity: 0, clipPath: 'inset(8% 8% 8% 8%)' }}
-                  whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
-                  viewport={{ once: false, amount: 0.35 }}
+                  initial={
+                    soft
+                      ? { opacity: 0 }
+                      : { opacity: 0, clipPath: 'inset(8% 8% 8% 8%)' }
+                  }
+                  whileInView={
+                    soft
+                      ? { opacity: 1 }
+                      : { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }
+                  }
+                  viewport={viewport}
                   transition={{
-                    duration: 0.85,
+                    duration: soft ? 0.45 : 0.85,
                     ease: [0.22, 1, 0.36, 1],
                     delay: Math.min(0.1 + index * 0.05, 0.35),
                   }}
@@ -295,10 +307,10 @@ export function Sets() {
 
       <motion.div
         className="sets__soundcloud"
-        initial={{ opacity: 0, y: 28 }}
+        initial={{ opacity: 0, y: soft ? 14 : 28 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.25 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        viewport={viewport}
+        transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="sets__panel-head">
           <p className="sets__tagline">SoundCloud</p>
@@ -323,10 +335,10 @@ export function Sets() {
 
       <motion.div
         className="sets__mixcloud"
-        initial={{ opacity: 0, y: 28 }}
+        initial={{ opacity: 0, y: soft ? 14 : 28 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.25 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        viewport={viewport}
+        transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="sets__panel-head">
           <div>

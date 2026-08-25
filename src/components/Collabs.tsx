@@ -1,12 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { collabLooks } from '../data/collabs'
+import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import './Collabs.css'
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
 export function Collabs() {
+  const { soft, viewport } = useMotionProfile()
   const [lightbox, setLightbox] = useState<{
     src: string
     alt: string
@@ -34,10 +36,12 @@ export function Collabs() {
       <motion.div
         className="collabs__mark"
         aria-hidden="true"
-        initial={{ opacity: 0, filter: 'blur(14px)' }}
-        whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-        viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 1.05, ease: easeOut }}
+        initial={soft ? { opacity: 0 } : { opacity: 0, filter: 'blur(14px)' }}
+        whileInView={
+          soft ? { opacity: 1 } : { opacity: 1, filter: 'blur(0px)' }
+        }
+        viewport={viewport}
+        transition={{ duration: soft ? 0.5 : 1.05, ease: easeOut }}
       >
         <BrandMark variant="star" className="collabs__star" />
       </motion.div>
@@ -48,47 +52,71 @@ export function Collabs() {
             {lookIndex === 0 && (
               <motion.p
                 className="section-label"
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: soft ? 8 : 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.55, ease: easeOut }}
+                viewport={viewport}
+                transition={{ duration: soft ? 0.4 : 0.55, ease: easeOut }}
               >
                 03 · Collabs
               </motion.p>
             )}
             <motion.h2
               className="collab__title"
-              initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              viewport={{ once: false, amount: 0.5 }}
-              transition={{ duration: 0.85, ease: easeOut, delay: 0.08 }}
+              initial={
+                soft
+                  ? { opacity: 0, y: 14 }
+                  : { opacity: 0, y: 28, filter: 'blur(6px)' }
+              }
+              whileInView={
+                soft
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 1, y: 0, filter: 'blur(0px)' }
+              }
+              viewport={viewport}
+              transition={{
+                duration: soft ? 0.5 : 0.85,
+                ease: easeOut,
+                delay: soft ? 0 : 0.08,
+              }}
             >
               {look.partners}
             </motion.h2>
             <motion.p
               className="collab__lead"
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: soft ? 10 : 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.7, ease: easeOut, delay: 0.16 }}
+              viewport={viewport}
+              transition={{
+                duration: soft ? 0.45 : 0.7,
+                ease: easeOut,
+                delay: soft ? 0.04 : 0.16,
+              }}
             >
               {look.lead}
             </motion.p>
             <motion.p
               className="collab__body"
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: soft ? 10 : 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.7, ease: easeOut, delay: 0.24 }}
+              viewport={viewport}
+              transition={{
+                duration: soft ? 0.45 : 0.7,
+                ease: easeOut,
+                delay: soft ? 0.08 : 0.24,
+              }}
             >
               {look.body}
             </motion.p>
             <motion.ul
               className="collab__credits"
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: soft ? 8 : 14 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.65, ease: easeOut, delay: 0.3 }}
+              viewport={viewport}
+              transition={{
+                duration: soft ? 0.4 : 0.65,
+                ease: easeOut,
+                delay: soft ? 0.1 : 0.3,
+              }}
             >
               {look.credits.map((credit) => (
                 <li key={credit.role}>
@@ -109,11 +137,11 @@ export function Collabs() {
                 <motion.li
                   key={src}
                   className="collab__shot"
-                  initial={{ opacity: 0, y: 28 }}
+                  initial={{ opacity: 0, y: soft ? 14 : 28 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, amount: 0.2 }}
+                  viewport={viewport}
                   transition={{
-                    duration: 0.75,
+                    duration: soft ? 0.45 : 0.75,
                     ease: easeOut,
                     delay: Math.min(index * 0.06, 0.3),
                   }}

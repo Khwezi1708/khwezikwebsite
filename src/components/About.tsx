@@ -1,11 +1,11 @@
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
 } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
 import { bio } from '../data/bio'
+import { useMotionProfile } from '../hooks/useMotionProfile'
 import './About.css'
 
 type Tone = 'honey' | 'rosewood'
@@ -70,16 +70,18 @@ function ParagraphList({
   stagger?: number
   baseDelay?: number
 }) {
+  const { soft, viewport } = useMotionProfile()
+
   return (
     <div className={className}>
       {paragraphs.map((paragraph, index) => (
         <motion.p
           key={paragraph.text.slice(0, 48)}
-          initial={{ opacity: 0, y: 22 }}
+          initial={soft ? { opacity: 0, y: 12 } : { opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.35 }}
+          viewport={viewport}
           transition={{
-            duration: 0.7,
+            duration: soft ? 0.45 : 0.7,
             ease: easeOut,
             delay: baseDelay + Math.min(index * stagger, 0.28),
           }}
@@ -103,7 +105,7 @@ function AboutImage({
   direction?: 'left' | 'right'
 }) {
   const ref = useRef<HTMLElement>(null)
-  const reduceMotion = useReducedMotion()
+  const { soft, viewport } = useMotionProfile()
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -112,7 +114,7 @@ function AboutImage({
   const y = useTransform(
     scrollYProgress,
     [0, 1],
-    reduceMotion ? [0, 0] : [28, -28],
+    soft ? [0, 0] : [28, -28],
   )
 
   const fromX = direction === 'left' ? -36 : 36
@@ -122,26 +124,26 @@ function AboutImage({
       ref={ref}
       className={className}
       initial={
-        reduceMotion
-          ? { opacity: 0 }
+        soft
+          ? { opacity: 0, y: 16 }
           : { opacity: 0, x: fromX, clipPath: 'inset(8% 8% 8% 8%)' }
       }
       whileInView={
-        reduceMotion
-          ? { opacity: 1 }
+        soft
+          ? { opacity: 1, y: 0 }
           : { opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }
       }
-      viewport={{ once: false, amount: 0.35 }}
-      transition={{ duration: 1.05, ease: easeOut }}
+      viewport={viewport}
+      transition={{ duration: soft ? 0.55 : 1.05, ease: easeOut }}
     >
-      <motion.img src={src} alt={alt} style={{ y }} />
+      <motion.img src={src} alt={alt} style={soft ? undefined : { y }} loading="lazy" decoding="async" />
     </motion.figure>
   )
 }
 
 export function About() {
   const sectionRef = useRef<HTMLElement>(null)
-  const reduceMotion = useReducedMotion()
+  const { soft, viewport } = useMotionProfile()
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start 0.9', 'start 0.15'],
@@ -150,7 +152,7 @@ export function About() {
   const titleScale = useTransform(
     scrollYProgress,
     [0, 1],
-    reduceMotion ? [1, 1] : [1, 0.88],
+    soft ? [1, 1] : [1, 0.88],
   )
 
   return (
@@ -159,17 +161,17 @@ export function About() {
         <div className="about__copy">
           <motion.p
             className="section-label"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: soft ? 10 : 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.6, ease: easeOut }}
+            viewport={viewport}
+            transition={{ duration: soft ? 0.4 : 0.6, ease: easeOut }}
           >
             01 · About
           </motion.p>
 
           <motion.h2
             className="about__headline"
-            style={{ scale: titleScale }}
+            style={soft ? undefined : { scale: titleScale }}
           >
             <span>{bio.headlineLine1}</span>
             <span>{bio.headlineLine2}</span>
@@ -177,10 +179,10 @@ export function About() {
 
           <motion.blockquote
             className="about__quote"
-            initial={{ opacity: 0, x: -12 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.7, delay: 0.1, ease: easeOut }}
+            initial={{ opacity: 0, x: soft ? 0 : -12, y: soft ? 10 : 0 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            viewport={viewport}
+            transition={{ duration: soft ? 0.45 : 0.7, delay: soft ? 0 : 0.1, ease: easeOut }}
           >
             “{bio.pullQuote}”
           </motion.blockquote>
@@ -208,25 +210,29 @@ export function About() {
           <motion.h3
             className="about__feature-title"
             initial={
-              reduceMotion
-                ? { opacity: 0 }
+              soft
+                ? { opacity: 0, y: 14 }
                 : { opacity: 0, y: 28, filter: 'blur(6px)' }
             }
             whileInView={
-              reduceMotion
-                ? { opacity: 1 }
+              soft
+                ? { opacity: 1, y: 0 }
                 : { opacity: 1, y: 0, filter: 'blur(0px)' }
             }
-            viewport={{ once: false, amount: 0.5 }}
-            transition={{ duration: 0.85, ease: easeOut, delay: 0.12 }}
+            viewport={viewport}
+            transition={{
+              duration: soft ? 0.5 : 0.85,
+              ease: easeOut,
+              delay: soft ? 0 : 0.12,
+            }}
           >
             {bio.featureHeadline}
           </motion.h3>
           <ParagraphList
             paragraphs={bio.feature}
             className="about__body"
-            baseDelay={0.22}
-            stagger={0.1}
+            baseDelay={soft ? 0.08 : 0.22}
+            stagger={soft ? 0.05 : 0.1}
           />
         </div>
       </div>

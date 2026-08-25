@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { contact, socials } from '../data/contact'
+import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import { Press } from './Press'
 import './Book.css'
@@ -55,6 +56,7 @@ export function Book() {
   const [form, setForm] = useState<FormState>(initialForm)
   const [status, setStatus] = useState<SubmitStatus>('idle')
   const reduceMotion = useReducedMotion()
+  const { soft, viewport } = useMotionProfile()
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -107,14 +109,14 @@ export function Book() {
         id="contact"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.25 }}
+        viewport={viewport}
         transition={{ duration: 0.9, ease: easeOut }}
       >
         <motion.p
           className="section-label"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={viewport}
           transition={{ duration: 0.55, ease: easeOut, delay: 0.05 }}
         >
           04 · Bookings
@@ -123,7 +125,7 @@ export function Book() {
           className="book__title"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={viewport}
           transition={{ duration: 0.65, ease: easeOut, delay: 0.1 }}
         >
           Contact us
@@ -132,7 +134,7 @@ export function Book() {
           className="book__lede"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={viewport}
           transition={{ duration: 0.6, ease: easeOut, delay: 0.16 }}
         >
           For bookings, press and collaborations.
@@ -141,10 +143,10 @@ export function Book() {
         <div className="book__sheet">
           <motion.div
             className="book__aside"
-            initial={{ opacity: 0, x: -16 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.7, ease: easeOut, delay: 0.2 }}
+            initial={{ opacity: 0, y: soft ? 12 : 0, x: soft ? 0 : -16 }}
+            whileInView={{ opacity: 1, y: 0, x: 0 }}
+            viewport={viewport}
+            transition={{ duration: soft ? 0.45 : 0.7, ease: easeOut, delay: soft ? 0.05 : 0.2 }}
           >
             <p className="book__aside-label">Email</p>
             <a className="book__aside-mail" href={`mailto:${contact.email}`}>
@@ -173,7 +175,7 @@ export function Book() {
               className="book__field"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.22 }}
             >
               <span>Name</span>
@@ -196,7 +198,7 @@ export function Book() {
               className="book__field"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.28 }}
             >
               <span>Email</span>
@@ -219,7 +221,7 @@ export function Book() {
               className="book__field book__field--topic"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.31 }}
             >
               <span>Topic</span>
@@ -246,7 +248,7 @@ export function Book() {
               className="book__field book__field--message"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.34 }}
             >
               <span>Message</span>
@@ -270,7 +272,7 @@ export function Book() {
               disabled={status === 'submitting'}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.4 }}
             >
               {status === 'submitting' ? 'Sending…' : 'Send message'}
@@ -297,7 +299,7 @@ export function Book() {
           className="footer__socials"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.4 }}
+          viewport={viewport}
           transition={{ duration: 0.7, ease: easeOut }}
         >
           <p className="section-label">06 · Socials</p>
@@ -309,7 +311,7 @@ export function Book() {
                   key={social.id}
                   initial={{ opacity: 0, y: 14 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={viewport}
                   transition={{
                     duration: 0.5,
                     ease: easeOut,
@@ -333,7 +335,7 @@ export function Book() {
           className="footer__bottom"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: false }}
+          viewport={viewport}
           transition={{ duration: 0.6, ease: easeOut, delay: 0.2 }}
         >
           <p className="footer__meta">
@@ -351,7 +353,7 @@ export function Book() {
                 ? { opacity: 1 }
                 : { opacity: 1, scale: 1, rotate: 0 }
             }
-            viewport={{ once: false }}
+            viewport={viewport}
             transition={{ duration: 0.75, ease: easeOut, delay: 0.28 }}
           >
             <BrandMark variant="star" className="footer__star" />

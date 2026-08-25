@@ -29,6 +29,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-clearance);
+  overflow-x: hidden;
 }
 
 body {
@@ -39,6 +40,15 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+/* Phones / tablets: native scroll is smoother than CSS smooth scrolling */
+@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 img,

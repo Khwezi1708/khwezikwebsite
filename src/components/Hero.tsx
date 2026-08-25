@@ -6,6 +6,7 @@ import {
 } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { contact, hero } from '../data/contact'
+import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import './Hero.css'
 
@@ -15,6 +16,7 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const reduceMotion = useReducedMotion()
+  const { soft, lite } = useMotionProfile()
   const [sourceIndex, setSourceIndex] = useState(0)
   const [showVideo, setShowVideo] = useState(true)
   const [videoReady, setVideoReady] = useState(false)
@@ -26,37 +28,32 @@ export function Hero() {
   const mediaY = useTransform(
     scrollYProgress,
     [0, 1],
-    reduceMotion ? ['0%', '0%'] : ['0%', '18%'],
+    soft ? ['0%', '0%'] : ['0%', '18%'],
   )
   const mediaScale = useTransform(
     scrollYProgress,
     [0, 1],
-    reduceMotion ? [1, 1] : [1, 1.12],
-  )
-  const mediaBlur = useTransform(
-    scrollYProgress,
-    [0.35, 0.85],
-    reduceMotion ? ['blur(0px)', 'blur(0px)'] : ['blur(0px)', 'blur(18px)'],
+    soft ? [1, 1] : [1, 1.12],
   )
   const mediaBright = useTransform(
     scrollYProgress,
     [0.35, 0.9],
-    reduceMotion ? [1, 1] : [1, 0.55],
+    soft ? [1, 1] : [1, 0.55],
   )
   const contentOpacity = useTransform(
     scrollYProgress,
     [0, 0.45],
-    reduceMotion ? [1, 1] : [1, 0],
+    soft ? [1, 1] : [1, 0],
   )
   const contentY = useTransform(
     scrollYProgress,
     [0, 0.45],
-    reduceMotion ? [0, 0] : [0, -48],
+    soft ? [0, 0] : [0, -48],
   )
   const veilOpacity = useTransform(
     scrollYProgress,
     [0.4, 0.95],
-    reduceMotion ? [0, 0] : [0, 1],
+    soft ? [0, 0] : [0, 1],
   )
 
   useEffect(() => {
@@ -75,6 +72,26 @@ export function Hero() {
     void play()
   }, [showVideo, sourceIndex])
 
+  useEffect(() => {
+    const video = videoRef.current
+    const section = sectionRef.current
+    if (!video || !section || !showVideo) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return
+        if (entry.isIntersecting) {
+          void video.play().catch(() => undefined)
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.15 },
+    )
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [showVideo, sourceIndex])
+
   const onVideoError = () => {
     if (sourceIndex < heroSources.length - 1) {
       setVideoReady(false)
@@ -86,7 +103,12 @@ export function Hero() {
   }
 
   return (
-    <section className="hero" id="top" aria-label="KHWEZI K — Amapiano and Afro House DJ" ref={sectionRef}>
+    <section
+      className={`hero${soft ? ' hero--lite' : ''}`}
+      id="top"
+      aria-label="KHWEZI K — Amapiano and Afro House DJ"
+      ref={sectionRef}
+    >
       <div
         className={`hero__loader ${videoReady || !showVideo ? 'is-done' : ''}`}
         aria-hidden="true"
@@ -97,12 +119,15 @@ export function Hero() {
       <motion.div
         className="hero__media"
         aria-hidden="true"
-        style={{
-          y: mediaY,
-          scale: mediaScale,
-          filter: mediaBlur,
-          opacity: mediaBright,
-        }}
+        style={
+          soft
+            ? undefined
+            : {
+                y: mediaY,
+                scale: mediaScale,
+                opacity: mediaBright,
+              }
+        }
       >
         {showVideo && (
           <video
@@ -114,7 +139,7 @@ export function Hero() {
             loop
             playsInline
             autoPlay
-            preload="auto"
+            preload={lite ? 'metadata' : 'auto'}
             onLoadedData={() => setVideoReady(true)}
             onPlaying={() => setVideoReady(true)}
             onError={onVideoError}
@@ -124,15 +149,17 @@ export function Hero() {
         <div className="hero__grain" />
       </motion.div>
 
-      <motion.div
-        className="hero__veil"
-        aria-hidden="true"
-        style={{ opacity: veilOpacity }}
-      />
+      {!soft && (
+        <motion.div
+          className="hero__veil"
+          aria-hidden="true"
+          style={{ opacity: veilOpacity }}
+        />
+      )}
 
       <motion.div
         className="hero__content"
-        style={{ opacity: contentOpacity, y: contentY }}
+        style={soft ? undefined : { opacity: contentOpacity, y: contentY }}
       >
         <motion.p
           className="hero__label"

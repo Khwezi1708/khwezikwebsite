@@ -47,7 +47,17 @@
   inset: -8% 0;
   z-index: 0;
   background: var(--cocoa);
-  will-change: transform;
+}
+
+.hero--lite .hero__media {
+  inset: 0;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.hero--lite .hero__grain {
+  display: none;
 }
 
 .hero__video,
