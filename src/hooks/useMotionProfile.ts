@@ -22,15 +22,16 @@ export function isIOSSafari() {
 }
 
 /**
- * Soft motion for phones/tablets:
- * - no useScroll / parallax (Safari janks hard on scroll-linked values)
+ * Soft motion only where Safari on iOS struggles:
+ * - no useScroll / parallax
  * - no entrance transforms while scrolling
- * - static rem spacing so toolbar resize does not jump layout
+ * Chrome/Firefox on the same phone keep full motion.
+ * `lite` still marks touch/narrow viewports for lighter media (preload, etc.).
  */
 export function useMotionProfile() {
   const reduceMotion = useReducedMotion() === true
   const [lite, setLite] = useState(matchesLite)
-  const [safariIOS, setSafariIOS] = useState(false)
+  const [safariIOS, setSafariIOS] = useState(isIOSSafari)
 
   useEffect(() => {
     const media = window.matchMedia(LITE_QUERY)
@@ -48,7 +49,7 @@ export function useMotionProfile() {
     }
   }, [])
 
-  const soft = reduceMotion || lite
+  const soft = reduceMotion || safariIOS
 
   return {
     reduceMotion,
