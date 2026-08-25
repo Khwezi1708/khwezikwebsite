@@ -113,8 +113,10 @@ export function buildHomepagePrerenderHtml(): string {
 
     <section id="sets">
       <p>02 · Sets</p>
-      <h2>Listen. Groove. Vibe.</h2>
-      <p>Afro electronic selections — Amapiano and Afro House, including guest sets on other channels.</p>
+      <h2>
+        Afro electronic selections: Amapiano and Afro House sets by KHWEZI K.
+        listen.groove.vibe
+      </h2>
       ${setSections}
       <p><a href="${escapeHtml(soundcloudEmbed.profileUrl)}">KHWEZI K on SoundCloud</a></p>
       <p><a href="${escapeHtml(mixcloudEmbed.showUrl)}?start=${mixcloudEmbed.startSeconds}">${escapeHtml(mixcloudEmbed.title)} — ${escapeHtml(mixcloudEmbed.note)}</a></p>

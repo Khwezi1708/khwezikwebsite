@@ -222,11 +222,11 @@ export function Sets() {
         <div className="sets__header">
           <div className="sets__copy">
             <p className="section-label">02 · Sets</p>
-            <h2 className="section-title">Listen. Groove. Vibe.</h2>
-            <p className="sets__intro">
-              Afro electronic selections — Amapiano and Afro House, including
-              guest sets on other channels.
-            </p>
+            <h2 className="sets__intro">
+              Afro electronic selections: Amapiano and Afro House sets by
+              KHWEZI K.{' '}
+              <span className="sets__vibe">listen.groove.vibe</span>
+            </h2>
           </div>
         </div>
 
@@ -337,11 +337,11 @@ export function Sets() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="section-label">02 · Sets</p>
-          <h2 className="section-title">Listen. Groove. Vibe.</h2>
-          <p className="sets__intro">
-            Afro electronic selections — Amapiano and Afro House, including
-            guest sets on other channels.
-          </p>
+          <h2 className="sets__intro">
+            Afro electronic selections: Amapiano and Afro House sets by
+            KHWEZI K.{' '}
+            <span className="sets__vibe">listen.groove.vibe</span>
+          </h2>
         </motion.div>
       </div>
 

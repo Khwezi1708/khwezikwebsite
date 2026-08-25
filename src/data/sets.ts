@@ -20,7 +20,7 @@ export const genres: GenrePlaylist[] = [
   {
     key: 'amapiano',
     label: 'Amapiano',
-    tagline: 'Private school piano · sgidongo · soulful grooves',
+    tagline: 'soulful grooves · amapiano',
     playlistUrl:
       'https://www.youtube.com/playlist?list=PLfAdeXhWJ94MJVTz6vmapm_yrmBnQoTF3',
     sets: [
