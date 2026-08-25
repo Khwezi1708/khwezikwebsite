@@ -29,7 +29,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-clearance);
-  overflow-x: hidden;
 }
 
 body {
@@ -40,8 +39,18 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;
   overscroll-behavior-x: none;
+}
+
+/* iOS Safari: overflow-x on <html> causes scroll/repaint glitches */
+html.is-ios-safari,
+html.is-ios-safari body {
+  overflow-x: visible;
+}
+
+html.is-ios-safari .app {
+  overflow-x: clip;
 }
 
 @media (max-width: 1024px), (hover: none), (pointer: coarse) {
@@ -49,10 +58,6 @@ body {
     scroll-behavior: auto;
   }
 
-  /*
-   * Mobile browser chrome show/hide changes vh/dvh and makes sections bounce.
-   * Lock spacing to rem on touch / narrow viewports.
-   */
   .about {
     padding: 4rem clamp(1.25rem, 4vw, 3rem) 2rem;
     gap: 2.5rem;
@@ -130,6 +135,22 @@ body {
   .hero__content {
     padding-bottom: 4.5rem;
   }
+}
+
+/* Extra Safari polish: avoid blend/filter work during scroll */
+html.is-ios-safari .hero__grain {
+  display: none;
+}
+
+html.is-ios-safari .nav--solid {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(42, 26, 22, 0.98);
+}
+
+html.is-ios-safari .hero__video {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 img,

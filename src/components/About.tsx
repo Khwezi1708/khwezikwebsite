@@ -64,24 +64,36 @@ function ParagraphList({
   className = 'about__body',
   stagger = 0.06,
   baseDelay = 0,
+  soft,
 }: {
   paragraphs: readonly Paragraph[]
   className?: string
   stagger?: number
   baseDelay?: number
+  soft: boolean
 }) {
-  const { soft, viewport } = useMotionProfile()
+  if (soft) {
+    return (
+      <div className={className}>
+        {paragraphs.map((paragraph) => (
+          <p key={paragraph.text.slice(0, 48)}>
+            {highlightText(paragraph.text, paragraph.highlights ?? [])}
+          </p>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div className={className}>
       {paragraphs.map((paragraph, index) => (
         <motion.p
           key={paragraph.text.slice(0, 48)}
-          initial={soft ? false : { opacity: 0, y: 22 }}
-          whileInView={soft ? undefined : { opacity: 1, y: 0 }}
-          viewport={viewport}
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.35 }}
           transition={{
-            duration: soft ? 0.45 : 0.7,
+            duration: 0.7,
             ease: easeOut,
             delay: baseDelay + Math.min(index * stagger, 0.28),
           }}
@@ -93,7 +105,23 @@ function ParagraphList({
   )
 }
 
-function AboutImage({
+function AboutImageStatic({
+  src,
+  alt,
+  className,
+}: {
+  src: string
+  alt: string
+  className: string
+}) {
+  return (
+    <figure className={className}>
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
+    </figure>
+  )
+}
+
+function AboutImageMotion({
   src,
   alt,
   className,
@@ -105,55 +133,79 @@ function AboutImage({
   direction?: 'left' | 'right'
 }) {
   const ref = useRef<HTMLElement>(null)
-  const { soft, viewport } = useMotionProfile()
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
   })
-
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    soft ? [0, 0] : [28, -28],
-  )
-
+  const y = useTransform(scrollYProgress, [0, 1], [28, -28])
   const fromX = direction === 'left' ? -36 : 36
 
   return (
     <motion.figure
       ref={ref}
       className={className}
-      initial={
-        soft
-          ? false
-          : { opacity: 0, x: fromX, clipPath: 'inset(8% 8% 8% 8%)' }
-      }
-      whileInView={
-        soft
-          ? undefined
-          : { opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }
-      }
-      viewport={viewport}
-      transition={{ duration: soft ? 0.55 : 1.05, ease: easeOut }}
+      initial={{ opacity: 0, x: fromX, clipPath: 'inset(8% 8% 8% 8%)' }}
+      whileInView={{ opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }}
+      viewport={{ once: false, amount: 0.35 }}
+      transition={{ duration: 1.05, ease: easeOut }}
     >
-      <motion.img src={src} alt={alt} style={soft ? undefined : { y }} loading="lazy" decoding="async" />
+      <motion.img
+        src={src}
+        alt={alt}
+        style={{ y }}
+        loading="lazy"
+        decoding="async"
+      />
     </motion.figure>
   )
 }
 
-export function About() {
+function AboutStatic() {
+  return (
+    <section className="about" id="about">
+      <div className="about__intro">
+        <div className="about__copy">
+          <p className="section-label">01 · About</p>
+          <h2 className="about__headline">
+            <span>{bio.headlineLine1}</span>
+            <span>{bio.headlineLine2}</span>
+          </h2>
+          <blockquote className="about__quote">“{bio.pullQuote}”</blockquote>
+          <ParagraphList paragraphs={bio.intro} soft />
+        </div>
+        <AboutImageStatic
+          className="about__visual"
+          src="/images/about-nova.jpg"
+          alt="KHWEZI K, Amapiano and Afro House DJ"
+        />
+      </div>
+
+      <div className="about__feature">
+        <AboutImageStatic
+          className="about__feature-visual"
+          src="/images/about-club.jpg"
+          alt="KHWEZI K performing a live Afro electronic DJ set"
+        />
+        <div className="about__feature-copy">
+          <h3 className="about__feature-title">{bio.featureHeadline}</h3>
+          <ParagraphList
+            paragraphs={bio.feature}
+            className="about__body"
+            soft
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function AboutMotion() {
   const sectionRef = useRef<HTMLElement>(null)
-  const { soft, viewport } = useMotionProfile()
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start 0.9', 'start 0.15'],
   })
-
-  const titleScale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    soft ? [1, 1] : [1, 0.88],
-  )
+  const titleScale = useTransform(scrollYProgress, [0, 1], [1, 0.88])
 
   return (
     <section className="about" id="about" ref={sectionRef}>
@@ -161,17 +213,17 @@ export function About() {
         <div className="about__copy">
           <motion.p
             className="section-label"
-            initial={soft ? false : { opacity: 0, y: 16 }}
-            whileInView={soft ? undefined : { opacity: 1, y: 0 }}
-            viewport={viewport}
-            transition={{ duration: soft ? 0.4 : 0.6, ease: easeOut }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.6, ease: easeOut }}
           >
             01 · About
           </motion.p>
 
           <motion.h2
             className="about__headline"
-            style={soft ? undefined : { scale: titleScale }}
+            style={{ scale: titleScale }}
           >
             <span>{bio.headlineLine1}</span>
             <span>{bio.headlineLine2}</span>
@@ -179,18 +231,18 @@ export function About() {
 
           <motion.blockquote
             className="about__quote"
-            initial={soft ? false : { opacity: 0, x: -12 }}
-            whileInView={soft ? undefined : { opacity: 1, x: 0 }}
-            viewport={viewport}
-            transition={{ duration: soft ? 0.45 : 0.7, delay: soft ? 0 : 0.1, ease: easeOut }}
+            initial={{ opacity: 0, x: -12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.7, delay: 0.1, ease: easeOut }}
           >
             “{bio.pullQuote}”
           </motion.blockquote>
 
-          <ParagraphList paragraphs={bio.intro} />
+          <ParagraphList paragraphs={bio.intro} soft={false} />
         </div>
 
-        <AboutImage
+        <AboutImageMotion
           className="about__visual"
           src="/images/about-nova.jpg"
           alt="KHWEZI K, Amapiano and Afro House DJ"
@@ -199,7 +251,7 @@ export function About() {
       </div>
 
       <div className="about__feature">
-        <AboutImage
+        <AboutImageMotion
           className="about__feature-visual"
           src="/images/about-club.jpg"
           alt="KHWEZI K performing a live Afro electronic DJ set"
@@ -209,29 +261,27 @@ export function About() {
         <div className="about__feature-copy">
           <motion.h3
             className="about__feature-title"
-            initial={
-              soft ? false : { opacity: 0, y: 28, filter: 'blur(6px)' }
-            }
-            whileInView={
-              soft ? undefined : { opacity: 1, y: 0, filter: 'blur(0px)' }
-            }
-            viewport={viewport}
-            transition={{
-              duration: soft ? 0.5 : 0.85,
-              ease: easeOut,
-              delay: soft ? 0 : 0.12,
-            }}
+            initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.85, ease: easeOut, delay: 0.12 }}
           >
             {bio.featureHeadline}
           </motion.h3>
           <ParagraphList
             paragraphs={bio.feature}
             className="about__body"
-            baseDelay={soft ? 0.08 : 0.22}
-            stagger={soft ? 0.05 : 0.1}
+            baseDelay={0.22}
+            stagger={0.1}
+            soft={false}
           />
         </div>
       </div>
     </section>
   )
+}
+
+export function About() {
+  const { soft } = useMotionProfile()
+  return soft ? <AboutStatic /> : <AboutMotion />
 }
