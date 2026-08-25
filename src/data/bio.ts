@@ -16,7 +16,8 @@ export const bio = {
     },
   ],
   /** Sits beside the B&W club image */
-  featureHeadline: 'Many moods, one groove',
+  featureHeadlineLine1: 'Many moods,',
+  featureHeadlineLine2: 'one groove',
   feature: [
     {
       text: 'Known for her versatility and ability to blend diverse styles within Amapiano and Afro House, KHWEZI K brings a natural, groovy vibe to every set, letting the music speak for itself. Inspired by R&B, groovy house, Black Coffee, Kelvin Momo, Kabza De Small, and the timeless artistry of Amy Winehouse, she has developed a unique approach to sound and rhythm.',

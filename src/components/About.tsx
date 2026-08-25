@@ -187,7 +187,10 @@ function AboutStatic() {
           alt="KHWEZI K performing a live Afro electronic DJ set"
         />
         <div className="about__feature-copy">
-          <h3 className="about__feature-title">{bio.featureHeadline}</h3>
+          <h3 className="about__feature-title">
+            <span>{bio.featureHeadlineLine1}</span>
+            <span>{bio.featureHeadlineLine2}</span>
+          </h3>
           <ParagraphList
             paragraphs={bio.feature}
             className="about__body"
@@ -266,7 +269,8 @@ function AboutMotion() {
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.85, ease: easeOut, delay: 0.12 }}
           >
-            {bio.featureHeadline}
+            <span>{bio.featureHeadlineLine1}</span>
+            <span>{bio.featureHeadlineLine2}</span>
           </motion.h3>
           <ParagraphList
             paragraphs={bio.feature}

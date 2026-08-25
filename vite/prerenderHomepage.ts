@@ -106,7 +106,7 @@ export function buildHomepagePrerenderHtml(): string {
       <h2>${escapeHtml(bio.headlineLine1)} ${escapeHtml(bio.headlineLine2)}</h2>
       <blockquote>“${escapeHtml(bio.pullQuote)}”</blockquote>
       ${paragraphs(bio.intro)}
-      <h3>${escapeHtml(bio.featureHeadline)}</h3>
+      <h3>Many moods,<br />one groove</h3>
       ${paragraphs(bio.feature)}
     </section>
 
