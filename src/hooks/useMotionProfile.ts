@@ -9,8 +9,10 @@ function matchesLite() {
 }
 
 /**
- * Soft motion for phones/tablets: no scroll-linked blur/parallax,
- * animate-once whileInView to avoid scroll jank.
+ * Soft motion for phones/tablets:
+ * - no scroll-linked blur/parallax
+ * - MotionConfig reducedMotion=always (no transform bounce while scrolling)
+ * - static rem spacing (see CSS) so Safari toolbar resize does not jump layout
  */
 export function useMotionProfile() {
   const reduceMotion = useReducedMotion() === true
@@ -30,8 +32,9 @@ export function useMotionProfile() {
     reduceMotion,
     lite,
     soft,
+    /** Prefer once on soft; desktop may replay */
     viewport: soft
-      ? ({ once: true, amount: 0.2 } as const)
+      ? ({ once: true, amount: 0.15 } as const)
       : ({ once: false, amount: 0.35 } as const),
   }
 }

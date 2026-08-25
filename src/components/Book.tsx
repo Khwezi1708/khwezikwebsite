@@ -57,6 +57,9 @@ export function Book() {
   const [status, setStatus] = useState<SubmitStatus>('idle')
   const reduceMotion = useReducedMotion()
   const { soft, viewport } = useMotionProfile()
+  const enter = <T,>(hidden: T) => (soft ? false : hidden)
+  const reveal = <T,>(shown: T) => (soft ? undefined : shown)
+
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -107,15 +110,15 @@ export function Book() {
       <motion.div
         className="book__panel"
         id="contact"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={enter({ opacity: 0, y: 40 })}
+        whileInView={reveal({ opacity: 1, y: 0 })}
         viewport={viewport}
         transition={{ duration: 0.9, ease: easeOut }}
       >
         <motion.p
           className="section-label"
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={enter({ opacity: 0, y: 14 })}
+          whileInView={reveal({ opacity: 1, y: 0 })}
           viewport={viewport}
           transition={{ duration: 0.55, ease: easeOut, delay: 0.05 }}
         >
@@ -123,8 +126,8 @@ export function Book() {
         </motion.p>
         <motion.h2
           className="book__title"
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={enter({ opacity: 0, y: 18 })}
+          whileInView={reveal({ opacity: 1, y: 0 })}
           viewport={viewport}
           transition={{ duration: 0.65, ease: easeOut, delay: 0.1 }}
         >
@@ -132,8 +135,8 @@ export function Book() {
         </motion.h2>
         <motion.p
           className="book__lede"
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={enter({ opacity: 0, y: 14 })}
+          whileInView={reveal({ opacity: 1, y: 0 })}
           viewport={viewport}
           transition={{ duration: 0.6, ease: easeOut, delay: 0.16 }}
         >
@@ -143,8 +146,8 @@ export function Book() {
         <div className="book__sheet">
           <motion.div
             className="book__aside"
-            initial={{ opacity: 0, y: soft ? 12 : 0, x: soft ? 0 : -16 }}
-            whileInView={{ opacity: 1, y: 0, x: 0 }}
+            initial={enter({ opacity: 0, x: -16 })}
+            whileInView={reveal({ opacity: 1, x: 0 })}
             viewport={viewport}
             transition={{ duration: soft ? 0.45 : 0.7, ease: easeOut, delay: soft ? 0.05 : 0.2 }}
           >
@@ -173,8 +176,8 @@ export function Book() {
 
             <motion.label
               className="book__field"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={enter({ opacity: 0, y: 16 })}
+              whileInView={reveal({ opacity: 1, y: 0 })}
               viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.22 }}
             >
@@ -196,8 +199,8 @@ export function Book() {
 
             <motion.label
               className="book__field"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={enter({ opacity: 0, y: 16 })}
+              whileInView={reveal({ opacity: 1, y: 0 })}
               viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.28 }}
             >
@@ -219,8 +222,8 @@ export function Book() {
 
             <motion.label
               className="book__field book__field--topic"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={enter({ opacity: 0, y: 16 })}
+              whileInView={reveal({ opacity: 1, y: 0 })}
               viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.31 }}
             >
@@ -246,8 +249,8 @@ export function Book() {
 
             <motion.label
               className="book__field book__field--message"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={enter({ opacity: 0, y: 16 })}
+              whileInView={reveal({ opacity: 1, y: 0 })}
               viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.34 }}
             >
@@ -270,8 +273,8 @@ export function Book() {
               type="submit"
               className="book__submit"
               disabled={status === 'submitting'}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={enter({ opacity: 0, y: 12 })}
+              whileInView={reveal({ opacity: 1, y: 0 })}
               viewport={viewport}
               transition={{ duration: 0.55, ease: easeOut, delay: 0.4 }}
             >
@@ -297,8 +300,8 @@ export function Book() {
       <footer className="footer" id="socials">
         <motion.div
           className="footer__socials"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={enter({ opacity: 0, y: 24 })}
+          whileInView={reveal({ opacity: 1, y: 0 })}
           viewport={viewport}
           transition={{ duration: 0.7, ease: easeOut }}
         >
@@ -309,8 +312,8 @@ export function Book() {
               {socials.map((social, index) => (
                 <motion.li
                   key={social.id}
-                  initial={{ opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={enter({ opacity: 0, y: 14 })}
+                  whileInView={reveal({ opacity: 1, y: 0 })}
                   viewport={viewport}
                   transition={{
                     duration: 0.5,
@@ -334,7 +337,7 @@ export function Book() {
         <motion.div
           className="footer__bottom"
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          whileInView={reveal({ opacity: 1 })}
           viewport={viewport}
           transition={{ duration: 0.6, ease: easeOut, delay: 0.2 }}
         >

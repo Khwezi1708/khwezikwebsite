@@ -36,9 +36,9 @@ export function Collabs() {
       <motion.div
         className="collabs__mark"
         aria-hidden="true"
-        initial={soft ? { opacity: 0 } : { opacity: 0, filter: 'blur(14px)' }}
+        initial={soft ? false : { opacity: 0, filter: 'blur(14px)' }}
         whileInView={
-          soft ? { opacity: 1 } : { opacity: 1, filter: 'blur(0px)' }
+          soft ? undefined : { opacity: 1, filter: 'blur(0px)' }
         }
         viewport={viewport}
         transition={{ duration: soft ? 0.5 : 1.05, ease: easeOut }}
@@ -52,8 +52,8 @@ export function Collabs() {
             {lookIndex === 0 && (
               <motion.p
                 className="section-label"
-                initial={{ opacity: 0, y: soft ? 8 : 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={soft ? false : { opacity: 0, y: 12 }}
+                whileInView={soft ? undefined : { opacity: 1, y: 0 }}
                 viewport={viewport}
                 transition={{ duration: soft ? 0.4 : 0.55, ease: easeOut }}
               >
@@ -63,14 +63,10 @@ export function Collabs() {
             <motion.h2
               className="collab__title"
               initial={
-                soft
-                  ? { opacity: 0, y: 14 }
-                  : { opacity: 0, y: 28, filter: 'blur(6px)' }
+                soft ? false : { opacity: 0, y: 28, filter: 'blur(6px)' }
               }
               whileInView={
-                soft
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 1, y: 0, filter: 'blur(0px)' }
+                soft ? undefined : { opacity: 1, y: 0, filter: 'blur(0px)' }
               }
               viewport={viewport}
               transition={{
@@ -83,8 +79,8 @@ export function Collabs() {
             </motion.h2>
             <motion.p
               className="collab__lead"
-              initial={{ opacity: 0, y: soft ? 10 : 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={soft ? false : { opacity: 0, y: 18 }}
+              whileInView={soft ? undefined : { opacity: 1, y: 0 }}
               viewport={viewport}
               transition={{
                 duration: soft ? 0.45 : 0.7,
@@ -96,8 +92,8 @@ export function Collabs() {
             </motion.p>
             <motion.p
               className="collab__body"
-              initial={{ opacity: 0, y: soft ? 10 : 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={soft ? false : { opacity: 0, y: 18 }}
+              whileInView={soft ? undefined : { opacity: 1, y: 0 }}
               viewport={viewport}
               transition={{
                 duration: soft ? 0.45 : 0.7,
@@ -109,8 +105,8 @@ export function Collabs() {
             </motion.p>
             <motion.ul
               className="collab__credits"
-              initial={{ opacity: 0, y: soft ? 8 : 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={soft ? false : { opacity: 0, y: 14 }}
+              whileInView={soft ? undefined : { opacity: 1, y: 0 }}
               viewport={viewport}
               transition={{
                 duration: soft ? 0.4 : 0.65,
@@ -137,8 +133,8 @@ export function Collabs() {
                 <motion.li
                   key={src}
                   className="collab__shot"
-                  initial={{ opacity: 0, y: soft ? 14 : 28 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={soft ? false : { opacity: 0, y: 28 }}
+                  whileInView={soft ? undefined : { opacity: 1, y: 0 }}
                   viewport={viewport}
                   transition={{
                     duration: soft ? 0.45 : 0.75,

@@ -1,12 +1,16 @@
+import { MotionConfig } from 'framer-motion'
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
+import { useMotionProfile } from './hooks/useMotionProfile'
 import { HiddenAnalytics } from './pages/HiddenAnalytics'
 import { NotFound } from './pages/NotFound'
 import { recordPageview } from './lib/traffic'
 import './styles/global.css'
 
 function PublicSite() {
+  const { soft } = useMotionProfile()
+
   useEffect(() => {
     void recordPageview()
 
@@ -17,7 +21,11 @@ function PublicSite() {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
-  return <App />
+  return (
+    <MotionConfig reducedMotion={soft ? 'always' : 'user'}>
+      <App />
+    </MotionConfig>
+  )
 }
 
 const path = window.location.pathname.replace(/\/+$/, '') || '/'

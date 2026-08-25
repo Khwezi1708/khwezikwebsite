@@ -44,10 +44,91 @@ body {
   overscroll-behavior-x: none;
 }
 
-/* Phones / tablets: native scroll is smoother than CSS smooth scrolling */
 @media (max-width: 1024px), (hover: none), (pointer: coarse) {
   html {
     scroll-behavior: auto;
+  }
+
+  /*
+   * Mobile browser chrome show/hide changes vh/dvh and makes sections bounce.
+   * Lock spacing to rem on touch / narrow viewports.
+   */
+  .about {
+    padding: 4rem clamp(1.25rem, 4vw, 3rem) 2rem;
+    gap: 2.5rem;
+  }
+
+  .sets {
+    padding: 0.5rem clamp(1.25rem, 4vw, 3rem) 2rem;
+  }
+
+  .sets__mark,
+  .collabs__mark {
+    margin: -0.75rem 0 0.5rem;
+  }
+
+  .sets__switch {
+    margin: 1.5rem 0 1.25rem;
+  }
+
+  .sets__list {
+    gap: 2rem;
+  }
+
+  .sets__more {
+    padding-top: 1.25rem;
+  }
+
+  .sets__soundcloud {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+  }
+
+  .sets__mixcloud {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+  }
+
+  .collabs {
+    padding: 0.5rem clamp(1.25rem, 4vw, 3rem) 4rem;
+  }
+
+  .collab {
+    gap: 1.5rem;
+  }
+
+  .collab + .collab {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+  }
+
+  .book {
+    padding: 0 clamp(1.25rem, 4vw, 3rem) 2rem;
+  }
+
+  .book__panel {
+    scroll-margin-top: var(--nav-clearance);
+    padding: 2.25rem clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .footer {
+    margin: 2.25rem auto 0;
+  }
+
+  .press {
+    padding: 2rem 0 0;
+  }
+
+  .press__panel {
+    padding: 1.25rem 0;
+  }
+
+  .press__visual {
+    min-height: 18rem;
+  }
+
+  .hero__content {
+    padding-bottom: 4.5rem;
   }
 }
 

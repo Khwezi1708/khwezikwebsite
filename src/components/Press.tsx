@@ -57,8 +57,8 @@ export function Press() {
       <div className="press__layout">
         <motion.div
           className="press__panel"
-          initial={{ opacity: 0, y: soft ? 14 : 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={soft ? false : { opacity: 0, y: 28 }}
+          whileInView={soft ? undefined : { opacity: 1, y: 0 }}
           viewport={viewport}
           transition={{ duration: soft ? 0.5 : 0.8, ease: easeOut }}
         >
@@ -81,12 +81,12 @@ export function Press() {
           className="press__visual"
           initial={
             soft
-              ? { opacity: 0, y: 16 }
+              ? false
               : { opacity: 0, x: 36, clipPath: 'inset(10% 10% 10% 10%)' }
           }
           whileInView={
             soft
-              ? { opacity: 1, y: 0 }
+              ? undefined
               : { opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }
           }
           viewport={viewport}

@@ -77,8 +77,8 @@ function ParagraphList({
       {paragraphs.map((paragraph, index) => (
         <motion.p
           key={paragraph.text.slice(0, 48)}
-          initial={soft ? { opacity: 0, y: 12 } : { opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={soft ? false : { opacity: 0, y: 22 }}
+          whileInView={soft ? undefined : { opacity: 1, y: 0 }}
           viewport={viewport}
           transition={{
             duration: soft ? 0.45 : 0.7,
@@ -125,12 +125,12 @@ function AboutImage({
       className={className}
       initial={
         soft
-          ? { opacity: 0, y: 16 }
+          ? false
           : { opacity: 0, x: fromX, clipPath: 'inset(8% 8% 8% 8%)' }
       }
       whileInView={
         soft
-          ? { opacity: 1, y: 0 }
+          ? undefined
           : { opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)' }
       }
       viewport={viewport}
@@ -161,8 +161,8 @@ export function About() {
         <div className="about__copy">
           <motion.p
             className="section-label"
-            initial={{ opacity: 0, y: soft ? 10 : 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={soft ? false : { opacity: 0, y: 16 }}
+            whileInView={soft ? undefined : { opacity: 1, y: 0 }}
             viewport={viewport}
             transition={{ duration: soft ? 0.4 : 0.6, ease: easeOut }}
           >
@@ -179,8 +179,8 @@ export function About() {
 
           <motion.blockquote
             className="about__quote"
-            initial={{ opacity: 0, x: soft ? 0 : -12, y: soft ? 10 : 0 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            initial={soft ? false : { opacity: 0, x: -12 }}
+            whileInView={soft ? undefined : { opacity: 1, x: 0 }}
             viewport={viewport}
             transition={{ duration: soft ? 0.45 : 0.7, delay: soft ? 0 : 0.1, ease: easeOut }}
           >
@@ -210,14 +210,10 @@ export function About() {
           <motion.h3
             className="about__feature-title"
             initial={
-              soft
-                ? { opacity: 0, y: 14 }
-                : { opacity: 0, y: 28, filter: 'blur(6px)' }
+              soft ? false : { opacity: 0, y: 28, filter: 'blur(6px)' }
             }
             whileInView={
-              soft
-                ? { opacity: 1, y: 0 }
-                : { opacity: 1, y: 0, filter: 'blur(0px)' }
+              soft ? undefined : { opacity: 1, y: 0, filter: 'blur(0px)' }
             }
             viewport={viewport}
             transition={{

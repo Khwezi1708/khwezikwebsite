@@ -163,9 +163,9 @@ export function Sets() {
       <motion.div
         className="sets__mark"
         aria-hidden="true"
-        initial={soft ? { opacity: 0 } : { opacity: 0, filter: 'blur(14px)' }}
+        initial={soft ? false : { opacity: 0, filter: 'blur(14px)' }}
         whileInView={
-          soft ? { opacity: 1 } : { opacity: 1, filter: 'blur(0px)' }
+          soft ? undefined : { opacity: 1, filter: 'blur(0px)' }
         }
         viewport={viewport}
         transition={{ duration: soft ? 0.5 : 1.05, ease: [0.22, 1, 0.36, 1] }}
@@ -176,8 +176,8 @@ export function Sets() {
       <div className="sets__header">
         <motion.div
           className="sets__copy"
-          initial={{ opacity: 0, y: soft ? 14 : 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={soft ? false : { opacity: 0, y: 28 }}
+          whileInView={soft ? undefined : { opacity: 1, y: 0 }}
           viewport={viewport}
           transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
@@ -202,13 +202,18 @@ export function Sets() {
               className={`sets__tab sets__tab--${genre.key} ${isActive ? 'is-active' : ''}`}
               onClick={() => setActive(genre.key)}
             >
-              {isActive && (
-                <motion.span
-                  className={`sets__tab-bg sets__tab-bg--${genre.key}`}
-                  layoutId="genre-tab"
-                  transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-                />
-              )}
+              {isActive &&
+                (soft ? (
+                  <span
+                    className={`sets__tab-bg sets__tab-bg--${genre.key}`}
+                  />
+                ) : (
+                  <motion.span
+                    className={`sets__tab-bg sets__tab-bg--${genre.key}`}
+                    layoutId="genre-tab"
+                    transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+                  />
+                ))}
               <span className="sets__tab-label">{genre.label}</span>
               <span className="sets__tab-count">{genre.sets.length}</span>
             </button>
@@ -221,10 +226,10 @@ export function Sets() {
           key={playlist.key}
           className="sets__panel"
           role="tabpanel"
-          initial={{ opacity: 0, y: 28 }}
+          initial={soft ? false : { opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          exit={soft ? undefined : { opacity: 0, y: -16 }}
+          transition={{ duration: soft ? 0.2 : 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="sets__panel-head">
             <p className="sets__tagline">{playlist.tagline}</p>
@@ -235,8 +240,8 @@ export function Sets() {
               <motion.li
                 key={set.id}
                 className="set"
-                initial={{ opacity: 0, y: soft ? 16 : 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={soft ? false : { opacity: 0, y: 32 }}
+                whileInView={soft ? undefined : { opacity: 1, y: 0 }}
                 viewport={viewport}
                 transition={{
                   duration: soft ? 0.45 : 0.65,
@@ -257,12 +262,12 @@ export function Sets() {
                   aria-label={`Watch ${set.title} on YouTube`}
                   initial={
                     soft
-                      ? { opacity: 0 }
+                      ? false
                       : { opacity: 0, clipPath: 'inset(8% 8% 8% 8%)' }
                   }
                   whileInView={
                     soft
-                      ? { opacity: 1 }
+                      ? undefined
                       : { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }
                   }
                   viewport={viewport}
@@ -307,8 +312,8 @@ export function Sets() {
 
       <motion.div
         className="sets__soundcloud"
-        initial={{ opacity: 0, y: soft ? 14 : 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={soft ? false : { opacity: 0, y: 28 }}
+        whileInView={soft ? undefined : { opacity: 1, y: 0 }}
         viewport={viewport}
         transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
@@ -335,8 +340,8 @@ export function Sets() {
 
       <motion.div
         className="sets__mixcloud"
-        initial={{ opacity: 0, y: soft ? 14 : 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={soft ? false : { opacity: 0, y: 28 }}
+        whileInView={soft ? undefined : { opacity: 1, y: 0 }}
         viewport={viewport}
         transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
