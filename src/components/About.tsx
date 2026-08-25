@@ -191,7 +191,7 @@ export function About() {
         <AboutImage
           className="about__visual"
           src="/images/about-nova.jpg"
-          alt="KHWEZI K"
+          alt="KHWEZI K, Amapiano and Afro House DJ"
           direction="right"
         />
       </div>
@@ -200,7 +200,7 @@ export function About() {
         <AboutImage
           className="about__feature-visual"
           src="/images/about-club.jpg"
-          alt="KHWEZI K performing live"
+          alt="KHWEZI K performing a live Afro electronic DJ set"
           direction="left"
         />
 

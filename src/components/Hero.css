@@ -124,6 +124,11 @@
   margin-bottom: 1.25rem;
 }
 
+.hero__brand {
+  margin: 0;
+  font: inherit;
+}
+
 .hero__lockup {
   width: min(92vw, 560px);
   height: auto;

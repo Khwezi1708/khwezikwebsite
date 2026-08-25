@@ -86,7 +86,7 @@ export function Hero() {
   }
 
   return (
-    <section className="hero" id="top" aria-label="KHWEZI K" ref={sectionRef}>
+    <section className="hero" id="top" aria-label="KHWEZI K — Amapiano and Afro House DJ" ref={sectionRef}>
       <div
         className={`hero__loader ${videoReady || !showVideo ? 'is-done' : ''}`}
         aria-hidden="true"
@@ -140,15 +140,19 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
         >
-          Afro electronic DJ
+          Amapiano & Afro House DJ
         </motion.p>
-        <motion.div
+        <motion.h1
+          className="hero__brand"
           initial={reduceMotion ? false : { opacity: 0, y: 36 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.28 }}
         >
-          <BrandMark className="hero__lockup" />
-        </motion.div>
+          <BrandMark className="hero__lockup" alt="" />
+          <span className="sr-only">
+            KHWEZI K — Amapiano and Afro House DJ for bookings
+          </span>
+        </motion.h1>
         <motion.p
           className="hero__tagline"
           initial={reduceMotion ? false : { opacity: 0, y: 24 }}

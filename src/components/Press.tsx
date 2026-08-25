@@ -91,7 +91,10 @@ export function Press() {
           viewport={{ once: false, amount: 0.35 }}
           transition={{ duration: 1, ease: easeOut, delay: 0.12 }}
         >
-          <img src="/images/press-socials.jpg" alt="KHWEZI K" />
+          <img
+            src="/images/press-socials.jpg"
+            alt="KHWEZI K for press and DJ bookings"
+          />
         </motion.figure>
       </div>
 
