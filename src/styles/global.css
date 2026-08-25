@@ -1,0 +1,93 @@
+:root {
+  --cocoa: #2a1a16;
+  --cream: #f4e9d6;
+  --clay: #c2603f;
+  --coral: #e89b7a;
+  --rosewood: #7c3f47;
+  --honey: #e6b566; /* Marula Honey */
+  --marula: #e6b566;
+  --ink-70: rgba(42, 26, 22, 0.72);
+  --cream-60: rgba(244, 233, 214, 0.6);
+  --cream-16: rgba(244, 233, 214, 0.16);
+  --cream-08: rgba(244, 233, 214, 0.08);
+  --sans: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'Space Mono', ui-monospace, monospace;
+  --maxw: 1180px;
+  --nav-h: 4.5rem;
+  --nav-clearance: calc(var(--nav-h) + 1.25rem);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-clearance);
+}
+
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  background: var(--cocoa);
+  color: var(--cream);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--clay);
+  color: var(--cream);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

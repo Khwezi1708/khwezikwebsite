@@ -1,0 +1,208 @@
+.press {
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vh, 3rem) 0 0;
+  scroll-margin-top: var(--nav-clearance);
+}
+
+.press__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(1.5rem, 4vw, 2.75rem);
+  align-items: stretch;
+}
+
+.press__panel {
+  padding: clamp(1.5rem, 3vh, 2.25rem) 0;
+  display: grid;
+  align-content: center;
+  border: 0;
+  background: transparent;
+}
+
+.press__lede {
+  max-width: 42ch;
+  color: var(--cream-60);
+  margin: -0.5rem 0 2rem;
+}
+
+.press__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  min-height: 3rem;
+  padding: 0.85rem 1.4rem;
+  background: var(--clay);
+  color: var(--cream);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    background 0.25s var(--ease),
+    transform 0.25s var(--ease);
+}
+
+.press__link:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--clay) 80%, var(--honey));
+}
+
+.press__visual {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  min-height: clamp(280px, 42vh, 460px);
+}
+
+.press__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+}
+
+.press__modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  background: rgba(42, 26, 22, 0.92);
+  cursor: pointer;
+}
+
+.press__modal-card {
+  position: relative;
+  width: min(100%, 420px);
+  padding: clamp(1.75rem, 4vw, 2.25rem);
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 100% 0%,
+      rgba(230, 181, 102, 0.12),
+      transparent 55%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(124, 63, 71, 0.55),
+      rgba(42, 26, 22, 0.92) 55%,
+      rgba(194, 96, 63, 0.28)
+    ),
+    var(--rosewood);
+  border: 1px solid var(--cream-16);
+  cursor: default;
+}
+
+.press__modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--cream-16);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.press__modal-close:hover {
+  border-color: var(--coral);
+  color: var(--honey);
+}
+
+.press__modal-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin: 0 0 0.55rem;
+}
+
+.press__modal-title {
+  font-weight: 800;
+  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 0.55rem;
+}
+
+.press__modal-copy {
+  color: var(--cream-60);
+  font-size: 0.92rem;
+  max-width: 34ch;
+  margin: 0 0 1.35rem;
+}
+
+.press__modal-field {
+  display: block;
+  margin: 0 0 0.85rem;
+}
+
+.press__modal-field input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--cream-16);
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.press__modal-field input:focus {
+  outline: 1px solid var(--honey);
+  outline-offset: 2px;
+}
+
+.press__modal-field input[aria-invalid='true'] {
+  border-color: var(--coral);
+}
+
+.press__modal-error {
+  margin: -0.35rem 0 0.85rem;
+  color: var(--coral);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.press__modal-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.85rem 1.4rem;
+  background: var(--clay);
+  color: var(--cream);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background 0.25s var(--ease);
+}
+
+.press__modal-submit:hover {
+  background: color-mix(in srgb, var(--clay) 80%, var(--honey));
+}
+
+@media (max-width: 800px) {
+  .press__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .press__visual {
+    order: -1;
+    min-height: clamp(240px, 48vw, 360px);
+  }
+
+  .press__visual img {
+    object-position: center 18%;
+  }
+}

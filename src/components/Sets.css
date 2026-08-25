@@ -1,0 +1,322 @@
+.sets {
+  width: min(100%, var(--maxw));
+  margin: 0 auto;
+  padding: clamp(0.35rem, 1.5vh, 1rem) clamp(1.25rem, 4vw, 3rem)
+    clamp(2rem, 5vh, 3.25rem);
+  scroll-margin-top: var(--nav-clearance);
+}
+
+.sets__header {
+  display: grid;
+}
+
+.sets__copy {
+  min-width: 0;
+}
+
+.sets__mark {
+  display: grid;
+  place-items: start end;
+  margin: -1.25rem 0 clamp(0.35rem, 1.2vh, 0.75rem);
+}
+
+.sets__star {
+  width: clamp(6.5rem, 14vw, 10rem);
+  height: auto;
+  opacity: 0.92;
+}
+
+.sets__intro {
+  max-width: 42ch;
+  color: var(--cream-60);
+  margin-top: 1rem;
+  font-size: 1.05rem;
+}
+
+.sets__switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: clamp(2rem, 5vh, 3rem) 0 1.75rem;
+  padding: 0.35rem;
+  border: 1px solid var(--cream-08);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.sets__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream-60);
+  isolation: isolate;
+}
+
+.sets__tab.is-active {
+  color: var(--cream);
+}
+
+.sets__tab-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.sets__tab-bg--amapiano {
+  background: linear-gradient(
+    120deg,
+    rgba(232, 155, 122, 0.95),
+    rgba(124, 63, 71, 0.92)
+  );
+}
+
+.sets__tab-bg--afrohouse {
+  background: linear-gradient(
+    120deg,
+    rgba(124, 63, 71, 0.95),
+    rgba(230, 181, 102, 0.88)
+  );
+}
+
+.sets__tab-count {
+  opacity: 0.7;
+}
+
+.sets__panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.sets__tagline {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coral);
+}
+
+.sets__channel,
+.sets__all {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--coral);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.15rem;
+}
+
+.sets__channel:hover,
+.sets__all:hover {
+  border-bottom-color: var(--coral);
+}
+
+.sets__list {
+  list-style: none;
+  display: grid;
+  gap: clamp(2.5rem, 6vh, 4rem);
+}
+
+.set {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+  padding-top: clamp(1.5rem, 3vh, 2rem);
+  border-top: 1px solid var(--cream-08);
+}
+
+.set__label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 0.75rem;
+}
+
+.set__title {
+  font-weight: 900;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+}
+
+.set__duration {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--cream-60);
+}
+
+.set__thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.set__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s var(--ease);
+}
+
+.set__thumb:hover img {
+  transform: scale(1.04);
+}
+
+.set__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(194, 96, 63, 0.92);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.25s var(--ease),
+    background 0.25s var(--ease);
+}
+
+.set__play::after {
+  content: '';
+  position: absolute;
+  left: 52%;
+  top: 50%;
+  transform: translate(-40%, -50%);
+  border-style: solid;
+  border-width: 0.55rem 0 0.55rem 0.9rem;
+  border-color: transparent transparent transparent var(--cream);
+}
+
+.set__thumb:hover .set__play {
+  background: var(--clay);
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.set__watch {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  padding: 0.4rem 0.65rem;
+  background: rgba(42, 26, 22, 0.82);
+  border: 1px solid var(--cream-08);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.sets__all {
+  display: inline-block;
+  margin-top: 2.5rem;
+}
+
+.sets__more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.sets__more-btn {
+  min-height: 3rem;
+  padding: 0.85rem 1.35rem;
+  border: 1px solid var(--cream-16);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+  transition:
+    border-color 0.25s var(--ease),
+    color 0.25s var(--ease),
+    background 0.25s var(--ease);
+}
+
+.sets__more-btn:hover {
+  border-color: var(--coral);
+  color: var(--honey);
+  background: rgba(232, 155, 122, 0.08);
+}
+
+.sets__more .sets__channel {
+  margin: 0;
+}
+
+.sets__soundcloud {
+  margin-top: clamp(3rem, 8vh, 5rem);
+  padding-top: clamp(2rem, 5vh, 3rem);
+  border-top: 1px solid var(--cream-08);
+}
+
+.sets__mixcloud {
+  margin-top: clamp(2rem, 5vh, 3rem);
+  padding-top: clamp(1.75rem, 4vh, 2.5rem);
+  border-top: 1px solid var(--cream-08);
+}
+
+.sets__mixcloud-note {
+  margin: 0.35rem 0 0;
+  color: var(--cream-60);
+  font-size: 0.9rem;
+}
+
+.sets__sc-frame {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--cream-08);
+}
+
+.sets__mc-frame {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  line-height: 0;
+  background: transparent;
+  border: 0;
+}
+
+.sets__sc-frame iframe,
+.sets__mc-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 800px) {
+  .set {
+    grid-template-columns: 1fr;
+  }
+
+  .sets__sc-frame {
+    height: 360px;
+  }
+}

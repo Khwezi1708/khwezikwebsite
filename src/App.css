@@ -1,0 +1,8 @@
+.app {
+  min-height: 100svh;
+  background: var(--cocoa);
+}
+
+main {
+  overflow-x: clip;
+}
