@@ -2,6 +2,7 @@ import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import { HiddenAnalytics } from './pages/HiddenAnalytics'
+import { NotFound } from './pages/NotFound'
 import { recordPageview } from './lib/traffic'
 import './styles/global.css'
 
@@ -20,10 +21,18 @@ function PublicSite() {
 }
 
 const path = window.location.pathname.replace(/\/+$/, '') || '/'
-const isAnalytics = path === '/hiddenanalytics'
+
+function resolveView() {
+  switch (path) {
+    case '/':
+      return <PublicSite />
+    case '/hiddenanalytics':
+      return <HiddenAnalytics />
+    default:
+      return <NotFound />
+  }
+}
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    {isAnalytics ? <HiddenAnalytics /> : <PublicSite />}
-  </StrictMode>,
+  <StrictMode>{resolveView()}</StrictMode>,
 )
