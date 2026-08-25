@@ -189,7 +189,7 @@ function HeroStatic() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
         >
-          Amapiano & Afro House DJ
+          Afro electronic DJ
         </motion.p>
         <motion.h1
           className="hero__brand"
@@ -199,7 +199,7 @@ function HeroStatic() {
         >
           <BrandMark className="hero__lockup" alt="" />
           <span className="sr-only">
-            KHWEZI K — Amapiano and Afro House DJ for bookings
+            KHWEZI K — Afro electronic DJ for bookings
           </span>
         </motion.h1>
         <motion.p
@@ -311,7 +311,7 @@ function HeroMotion() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
         >
-          Amapiano & Afro House DJ
+          Afro electronic DJ
         </motion.p>
         <motion.h1
           className="hero__brand"
@@ -321,7 +321,7 @@ function HeroMotion() {
         >
           <BrandMark className="hero__lockup" alt="" />
           <span className="sr-only">
-            KHWEZI K — Amapiano and Afro House DJ for bookings
+            KHWEZI K — Afro electronic DJ for bookings
           </span>
         </motion.h1>
         <motion.p

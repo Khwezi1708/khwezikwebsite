@@ -137,11 +137,15 @@
 .hero__brand {
   margin: 0;
   font: inherit;
+  line-height: 0;
 }
 
 .hero__lockup {
+  display: block;
   width: min(92vw, 560px);
   height: auto;
+  /* PNG has ~2.9% left transparent pad — pull letters flush with label */
+  margin-left: calc(min(92vw, 560px) * -0.029);
   margin-bottom: 1.35rem;
 }
 
@@ -237,6 +241,7 @@
 @media (max-width: 640px) {
   .hero__lockup {
     width: min(88vw, 340px);
+    margin-left: calc(min(88vw, 340px) * -0.029);
   }
 }
 

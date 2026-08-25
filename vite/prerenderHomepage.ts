@@ -91,8 +91,8 @@ export function buildHomepagePrerenderHtml(): string {
 
   <main>
     <section id="top" aria-label="KHWEZI K — Amapiano and Afro House DJ">
-      <p>Amapiano &amp; Afro House DJ</p>
-      <h1>KHWEZI K — Amapiano and Afro House DJ for bookings</h1>
+      <p>Afro electronic DJ</p>
+      <h1>KHWEZI K — Afro electronic DJ for bookings</h1>
       <p>${escapeHtml(contact.tagline)}</p>
       <p>
         <a href="#sets">Watch sets</a>
