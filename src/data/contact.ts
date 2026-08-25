@@ -37,10 +37,10 @@ export const pressPack = {
 } as const
 
 export const hero = {
-  /** Preferred high-quality clip */
-  videoSrc: '/video/hero.mov',
-  /** Fallback for browsers/devices that can’t play the MOV (e.g. some Samsung) */
-  fallbackSrc: '/video/hero.mp4',
+  /** Preferred web-friendly clip */
+  videoSrc: '/video/hero.mp4',
+  /** Fallback if MP4 fails to play */
+  fallbackSrc: '/video/hero.mov',
 } as const
 
 /** SoundCloud profile player (lists recent uploads). */
