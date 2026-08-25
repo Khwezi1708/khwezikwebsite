@@ -55,6 +55,8 @@ export const mixcloudEmbed = {
   title: 'Afro Affy Show 17 · EXT Radio',
   showUrl: 'https://www.mixcloud.com/AfroAffy/afro-affy-show-17/',
   note: 'KHWEZI K guest mix at the Afro Affy Radio Show from 1:19:30',
+  /** Displayed in Marula Honey in the Sets note */
+  cueLabel: '1:19:30',
   /** Seconds — 1:19:30 */
   startSeconds: 4770,
   /** Classic Mixcloud widget; start_time + Widget API seek as fallback. */

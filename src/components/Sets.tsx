@@ -139,6 +139,23 @@ function YouTubeThumb({ id }: { id: string }) {
   )
 }
 
+function MixcloudNote() {
+  const { note, cueLabel } = mixcloudEmbed
+  const cueIndex = note.indexOf(cueLabel)
+
+  if (cueIndex === -1) {
+    return <p className="sets__mixcloud-note">{note}</p>
+  }
+
+  return (
+    <p className="sets__mixcloud-note">
+      {note.slice(0, cueIndex)}
+      <span className="sets__mixcloud-cue">{cueLabel}</span>
+      {note.slice(cueIndex + cueLabel.length)}
+    </p>
+  )
+}
+
 export function Sets() {
   const [active, setActive] = useState<GenreKey>('amapiano')
   const { soft, viewport } = useMotionProfile()
@@ -290,7 +307,7 @@ export function Sets() {
           <div className="sets__panel-head">
             <div>
               <p className="sets__tagline">EXT Radio · Guest mix</p>
-              <p className="sets__mixcloud-note">{mixcloudEmbed.note}</p>
+              <MixcloudNote />
             </div>
             <a
               className="sets__channel"

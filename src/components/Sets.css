@@ -285,6 +285,13 @@
   font-size: 0.9rem;
 }
 
+.sets__mixcloud-cue {
+  color: var(--marula);
+  font-family: var(--mono);
+  font-size: 0.88em;
+  letter-spacing: 0.04em;
+}
+
 .sets__sc-frame {
   position: relative;
   width: 100%;
