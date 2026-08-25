@@ -275,14 +275,15 @@ export function Sets() {
               Open profile →
             </a>
           </div>
-          <div className="sets__sc-frame">
-            <iframe
-              title="KHWEZI K on SoundCloud"
-              allow="autoplay"
-              loading="lazy"
-              src={soundcloudEmbed.playerSrc}
-            />
-          </div>
+          <p className="sets__embed-fallback">
+            <a
+              href={soundcloudEmbed.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Listen on SoundCloud →
+            </a>
+          </p>
         </div>
 
         <div className="sets__mixcloud">
@@ -300,7 +301,15 @@ export function Sets() {
               Open show →
             </a>
           </div>
-          <MixcloudPlayer />
+          <p className="sets__embed-fallback">
+            <a
+              href={`${mixcloudEmbed.showUrl}?start=${mixcloudEmbed.startSeconds}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Listen on Mixcloud →
+            </a>
+          </p>
         </div>
       </section>
     )

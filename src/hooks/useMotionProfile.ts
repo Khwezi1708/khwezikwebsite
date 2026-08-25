@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 
 const LITE_QUERY = '(max-width: 1024px), (hover: none), (pointer: coarse)'
 
+/** Safari on iOS 17 and below gets the stagnant (no-animation) site. 18+ keeps motion. */
+export const STAGNANT_IOS_MAX = 17
+
 function matchesLite() {
   if (typeof window === 'undefined') return true
   return window.matchMedia(LITE_QUERY).matches
@@ -21,17 +24,44 @@ export function isIOSSafari() {
   return isWebKit && !isOtherBrowser
 }
 
+/** Parse iOS major.minor from the UA (`OS 17_6_1 like Mac OS X`). */
+export function getIOSVersion(): { major: number; minor: number } | null {
+  if (typeof navigator === 'undefined') return null
+  const match = navigator.userAgent.match(/OS (\d+)[._](\d+)/)
+  if (!match?.[1] || !match[2]) return null
+  return { major: Number(match[1]), minor: Number(match[2]) }
+}
+
+function needsStagnantSafari(safari: boolean, major: number | null) {
+  if (!safari) return false
+  // Unknown version on Safari → stay stagnant (safer for old devices)
+  if (major === null) return true
+  return major <= STAGNANT_IOS_MAX
+}
+
 /**
- * Soft motion only where Safari on iOS struggles:
- * - no useScroll / parallax
- * - no entrance transforms while scrolling
- * Chrome/Firefox on the same phone keep full motion.
- * `lite` still marks touch/narrow viewports for lighter media (preload, etc.).
+ * Soft / stagnant path:
+ * - Older iOS Safari (≤17): no Framer motion, CSS transitions off, embeds as links
+ * - Newer iOS Safari (18+), Chrome, desktop: full animations
+ * - Hero video still plays on stagnant
+ * `lite` still marks touch/narrow viewports for lighter media preload.
  */
+export function applyMotionDocumentClasses() {
+  if (typeof document === 'undefined') return
+  const safari = isIOSSafari()
+  const major = getIOSVersion()?.major ?? null
+  const stagnant = needsStagnantSafari(safari, major)
+  document.documentElement.classList.toggle('is-ios-safari', safari)
+  document.documentElement.classList.toggle('is-stagnant', stagnant)
+}
+
 export function useMotionProfile() {
   const reduceMotion = useReducedMotion() === true
   const [lite, setLite] = useState(matchesLite)
   const [safariIOS, setSafariIOS] = useState(isIOSSafari)
+  const [iosMajor, setIosMajor] = useState<number | null>(
+    () => getIOSVersion()?.major ?? null,
+  )
 
   useEffect(() => {
     const media = window.matchMedia(LITE_QUERY)
@@ -39,23 +69,27 @@ export function useMotionProfile() {
     sync()
     media.addEventListener('change', sync)
 
-    const safari = isIOSSafari()
-    setSafariIOS(safari)
-    document.documentElement.classList.toggle('is-ios-safari', safari)
+    applyMotionDocumentClasses()
+    setSafariIOS(isIOSSafari())
+    setIosMajor(getIOSVersion()?.major ?? null)
 
     return () => {
       media.removeEventListener('change', sync)
       document.documentElement.classList.remove('is-ios-safari')
+      document.documentElement.classList.remove('is-stagnant')
     }
   }, [])
 
-  const soft = reduceMotion || safariIOS
+  const stagnantSafari = needsStagnantSafari(safariIOS, iosMajor)
+  const soft = reduceMotion || stagnantSafari
 
   return {
     reduceMotion,
     lite,
     soft,
     safariIOS,
+    iosMajor,
+    stagnantSafari,
     viewport: soft
       ? ({ once: true, amount: 0.15 } as const)
       : ({ once: false, amount: 0.35 } as const),

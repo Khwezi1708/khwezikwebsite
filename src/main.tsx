@@ -2,11 +2,16 @@ import { MotionConfig } from 'framer-motion'
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
-import { useMotionProfile } from './hooks/useMotionProfile'
+import {
+  applyMotionDocumentClasses,
+  useMotionProfile,
+} from './hooks/useMotionProfile'
 import { HiddenAnalytics } from './pages/HiddenAnalytics'
 import { NotFound } from './pages/NotFound'
 import { recordPageview } from './lib/traffic'
 import './styles/global.css'
+
+applyMotionDocumentClasses()
 
 function PublicSite() {
   const { soft } = useMotionProfile()

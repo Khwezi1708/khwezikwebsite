@@ -173,6 +173,35 @@ html.is-ios-safari .about__portrait {
   top: auto;
 }
 
+/*
+ * Stagnant mode (older iOS Safari ≤17): freeze CSS motion.
+ * Hero video still plays — only animated chrome is killed.
+ */
+html.is-stagnant,
+html.is-stagnant * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+html.is-stagnant .hero__scroll span {
+  animation: none !important;
+}
+
+html.is-stagnant .sets__embed-fallback {
+  margin-top: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+html.is-stagnant .sets__embed-fallback a {
+  color: var(--honey);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(230, 181, 102, 0.35);
+}
+
 img,
 svg,
 video {
