@@ -244,7 +244,6 @@ export function Sets() {
                 <div className="set__meta">
                   <p className="set__label">{set.channel}</p>
                   <h3 className="set__title">{set.title}</h3>
-                  <p className="set__duration">{set.subtitle}</p>
                 </div>
                 <a
                   className="set__thumb"
@@ -380,7 +379,6 @@ export function Sets() {
                 <div className="set__meta">
                   <p className="set__label">{set.channel}</p>
                   <h3 className="set__title">{set.title}</h3>
-                  <p className="set__duration">{set.subtitle}</p>
                 </div>
                 <motion.a
                   className="set__thumb"

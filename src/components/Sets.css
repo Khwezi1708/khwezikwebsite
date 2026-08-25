@@ -160,14 +160,6 @@
   font-size: clamp(1.35rem, 3vw, 2rem);
   line-height: 1.15;
   letter-spacing: -0.01em;
-  margin-bottom: 0.75rem;
-}
-
-.set__duration {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  color: var(--cream-60);
 }
 
 .set__thumb {

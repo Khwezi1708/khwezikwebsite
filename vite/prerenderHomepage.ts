@@ -30,7 +30,6 @@ export function buildHomepagePrerenderHtml(): string {
             <li>
               <p>${escapeHtml(set.channel)}</p>
               <h3><a href="https://www.youtube.com/watch?v=${escapeHtml(set.id)}">${escapeHtml(set.title)}</a></h3>
-              <p>${escapeHtml(set.subtitle)}</p>
             </li>`,
         )
         .join('\n')
