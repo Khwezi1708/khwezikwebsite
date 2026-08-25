@@ -96,7 +96,7 @@ function CollabsStatic({
         <article key={look.id} className="collab">
           <div className="collab__copy">
             {lookIndex === 0 && (
-              <p className="section-label">03 · Collabs</p>
+              <p className="section-label">04 · Collabs</p>
             )}
             <h2 className="collab__title">{look.partners}</h2>
             <p className="collab__lead">{look.lead}</p>
@@ -176,7 +176,7 @@ function CollabsMotion({
                 viewport={viewport}
                 transition={{ duration: 0.55, ease: easeOut }}
               >
-                03 · Collabs
+                04 · Collabs
               </motion.p>
             )}
             <motion.h2

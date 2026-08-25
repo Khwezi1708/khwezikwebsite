@@ -15,8 +15,8 @@ export default function App() {
         <Hero />
         <About />
         <Sets />
-        <Collabs />
         <Gigs />
+        <Collabs />
         <Book />
       </main>
     </div>

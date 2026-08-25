@@ -89,7 +89,7 @@ function GigsHeader({ soft }: { soft: boolean }) {
   if (soft) {
     return (
       <>
-        <p className="section-label">04 · Gigs</p>
+        <p className="section-label">03 · Gigs</p>
         <h2 className="gigs__headline">
           <span>It&apos;s better IRL.</span>
           <span className="gigs__headline-accent">come through</span>
@@ -108,7 +108,7 @@ function GigsHeader({ soft }: { soft: boolean }) {
         viewport={viewport}
         transition={{ duration: 0.55, ease: easeOut }}
       >
-        04 · Gigs
+        03 · Gigs
       </motion.p>
       <h2 className="gigs__headline">
         <motion.span

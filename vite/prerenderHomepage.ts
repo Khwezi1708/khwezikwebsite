@@ -142,17 +142,17 @@ export function buildHomepagePrerenderHtml(): string {
       <p><a href="${escapeHtml(mixcloudEmbed.showUrl)}?start=${mixcloudEmbed.startSeconds}">${escapeHtml(mixcloudEmbed.title)} — ${escapeHtml(mixcloudEmbed.note)}</a></p>
     </section>
 
-    <section id="collabs">
-      <p>03 · Collabs</p>
-      <h2>Collaborations</h2>
-      ${collabs}
-    </section>
-
     <section id="gigs">
-      <p>04 · Gigs</p>
+      <p>03 · Gigs</p>
       <h2>It&apos;s better IRL.<br />come through</h2>
       <p>Be there for a KHWEZI K set in person</p>
       <ul>${gigRows || '<li>No gigs listed yet.</li>'}</ul>
+    </section>
+
+    <section id="collabs">
+      <p>04 · Collabs</p>
+      <h2>Collaborations</h2>
+      ${collabs}
     </section>
 
     <section id="contact">
