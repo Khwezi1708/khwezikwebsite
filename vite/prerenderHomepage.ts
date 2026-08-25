@@ -4,6 +4,7 @@ import type { Plugin } from 'vite'
 import { bio } from '../src/data/bio'
 import { collabLooks } from '../src/data/collabs'
 import { contact, mixcloudEmbed, socials, soundcloudEmbed } from '../src/data/contact'
+import { gigs } from '../src/data/gigs'
 import { genres } from '../src/data/sets'
 
 function escapeHtml(value: string) {
@@ -65,6 +66,24 @@ export function buildHomepagePrerenderHtml(): string {
     )
     .join('\n')
 
+  const gigRows = gigs
+    .map((gig) => {
+      const ticket = gig.ticketUrl
+        ? `<a href="${escapeHtml(gig.ticketUrl)}">Tickets</a>`
+        : gig.isPast
+          ? '—'
+          : 'TBA'
+      const locale = [gig.city, gig.country].filter(Boolean).join(', ')
+      const place = [gig.venue, locale].filter(Boolean).join(', ')
+      return `
+        <li>
+          <p>${escapeHtml(gig.eventName)}</p>
+          <p>${escapeHtml(place)}</p>
+          <p>${escapeHtml(gig.dateLabel)} · ${escapeHtml(gig.timeLabel)} · ${ticket}</p>
+        </li>`
+    })
+    .join('\n')
+
   const socialLinks = socials
     .map(
       (social) =>
@@ -81,6 +100,7 @@ export function buildHomepagePrerenderHtml(): string {
       <ul>
         <li><a href="#about">About</a></li>
         <li><a href="#sets">Sets</a></li>
+        <li><a href="#gigs">Gigs</a></li>
         <li><a href="#collabs">Collabs</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#press">Press</a></li>
@@ -128,22 +148,29 @@ export function buildHomepagePrerenderHtml(): string {
       ${collabs}
     </section>
 
+    <section id="gigs">
+      <p>04 · Gigs</p>
+      <h2>It&apos;s better IRL.<br />come through</h2>
+      <p>Be there for a KHWEZI K set in person</p>
+      <ul>${gigRows || '<li>No gigs listed yet.</li>'}</ul>
+    </section>
+
     <section id="contact">
-      <p>04 · Bookings</p>
+      <p>05 · Bookings</p>
       <h2>Contact us</h2>
       <p>For bookings, press and collaborations.</p>
       <p>Email: <a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></p>
     </section>
 
     <section id="press">
-      <p>05 · Press</p>
+      <p>06 · Press</p>
       <h2>Press pack</h2>
       <p>Bio, photos and assets for promoters, press and collaborators.</p>
     </section>
   </main>
 
   <footer id="socials">
-    <p>06 · Socials</p>
+    <p>07 · Socials</p>
     <h2>Stay connected.</h2>
     <nav aria-label="Socials">
       <ul>${socialLinks}</ul>

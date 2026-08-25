@@ -7,6 +7,7 @@ import './Nav.css'
 const links = [
   { href: '#about', label: 'About' },
   { href: '#sets', label: 'Sets' },
+  { href: '#gigs', label: 'Gigs' },
   { href: '#collabs', label: 'Collabs' },
   { href: '#contact', label: 'Contact' },
   { href: '#press', label: 'Press' },

@@ -23,6 +23,21 @@ GitHub Pages deploys automatically from `main` via Actions.
 
 Custom domain: **khwezik.com** (`public/CNAME`).
 
+## Gigs calendar
+
+Public gigs are pulled from **Google Calendar** at build time (up to 8 entries in date order: next shows first, then recent past).
+
+1. Use a **gigs-only** calendar (no private booking holds).
+2. For each event:
+   - **Title:** event name (shown on top — e.g. `Amapiano Worldwide`)
+   - **Location:** start with **venue**, then address, ending in city/country — e.g. `Basing House, 25 Kingsland Rd, London E2 8AA, UK`
+   - **Date/time:** start time (all-day events show as “All day”)
+   - **Description (optional):** first URL becomes the **Tickets** link
+3. In calendar settings → **Integrate calendar**, copy **Secret address in iCal format** (or public iCal if the calendar is public).
+4. Set locally in `.env` (see `.env.example`) and in GitHub → **Settings → Secrets** as `GOOGLE_CALENDAR_ICAL_URL`.
+
+Gigs update on the live site when a new deploy runs (`push` to `main`).
+
 ## Assets
 
 - Hero video: `public/video/hero.mov`

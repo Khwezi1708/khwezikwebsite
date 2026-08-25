@@ -205,7 +205,7 @@ export function Press() {
       <section className="press" id="press">
         <div className="press__layout">
           <div className="press__panel">
-            <p className="section-label">05 · Press</p>
+            <p className="section-label">06 · Press</p>
             <h2 className="section-title">Press pack</h2>
             <p className="press__lede">
               Bio, photos and assets for promoters, press and collaborators.
@@ -244,7 +244,7 @@ export function Press() {
           viewport={viewport}
           transition={{ duration: 0.8, ease: easeOut }}
         >
-          <p className="section-label">05 · Press</p>
+          <p className="section-label">06 · Press</p>
           <h2 className="section-title">Press pack</h2>
           <p className="press__lede">
             Bio, photos and assets for promoters, press and collaborators.

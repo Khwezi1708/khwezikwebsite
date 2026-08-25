@@ -1,6 +1,7 @@
 import { About } from './components/About'
 import { Book } from './components/Book'
 import { Collabs } from './components/Collabs'
+import { Gigs } from './components/Gigs'
 import { Hero } from './components/Hero'
 import { Nav } from './components/Nav'
 import { Sets } from './components/Sets'
@@ -15,6 +16,7 @@ export default function App() {
         <About />
         <Sets />
         <Collabs />
+        <Gigs />
         <Book />
       </main>
     </div>

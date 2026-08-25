@@ -193,7 +193,7 @@ function BookStatic({
   return (
     <section className="book">
       <div className="book__panel" id="contact">
-        <p className="section-label">04 · Bookings</p>
+        <p className="section-label">05 · Bookings</p>
         <h2 className="book__title">Contact us</h2>
         <p className="book__lede">For bookings, press and collaborations.</p>
 
@@ -218,7 +218,7 @@ function BookStatic({
 
       <footer className="footer" id="socials">
         <div className="footer__socials">
-          <p className="section-label">06 · Socials</p>
+          <p className="section-label">07 · Socials</p>
           <h2 className="section-title footer__title">Stay connected.</h2>
           <nav aria-label="Socials">
             <ul>
@@ -279,7 +279,7 @@ function BookMotion({
           viewport={viewport}
           transition={{ duration: 0.55, ease: easeOut, delay: 0.05 }}
         >
-          04 · Bookings
+          05 · Bookings
         </motion.p>
         <motion.h2
           className="book__title"
@@ -333,7 +333,7 @@ function BookMotion({
           viewport={viewport}
           transition={{ duration: 0.7, ease: easeOut }}
         >
-          <p className="section-label">06 · Socials</p>
+          <p className="section-label">07 · Socials</p>
           <h2 className="section-title footer__title">Stay connected.</h2>
           <nav aria-label="Socials">
             <ul>
