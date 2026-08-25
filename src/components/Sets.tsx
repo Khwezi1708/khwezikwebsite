@@ -158,17 +158,163 @@ export function Sets() {
     : playlist.sets.slice(0, PREVIEW_COUNT)
   const hasMore = playlist.sets.length > PREVIEW_COUNT
 
+  const genreSwitch = (
+    <div className="sets__switch" role="tablist" aria-label="Genre">
+      {genres.map((genre) => {
+        const isActive = genre.key === active
+        return (
+          <button
+            key={genre.key}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            className={`sets__tab sets__tab--${genre.key} ${isActive ? 'is-active' : ''}`}
+            onClick={() => setActive(genre.key)}
+          >
+            {isActive &&
+              (soft ? (
+                <span className={`sets__tab-bg sets__tab-bg--${genre.key}`} />
+              ) : (
+                <motion.span
+                  className={`sets__tab-bg sets__tab-bg--${genre.key}`}
+                  layoutId="genre-tab"
+                  transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+                />
+              ))}
+            <span className="sets__tab-label">{genre.label}</span>
+            <span className="sets__tab-count">{genre.sets.length}</span>
+          </button>
+        )
+      })}
+    </div>
+  )
+
+  const moreBlock = hasMore ? (
+    <div className="sets__more">
+      <button
+        type="button"
+        className="sets__more-btn"
+        aria-expanded={expanded}
+        onClick={() => setExpanded((value) => !value)}
+      >
+        {expanded
+          ? 'Show less'
+          : `See more (${playlist.sets.length - PREVIEW_COUNT})`}
+      </button>
+      <a
+        className="sets__channel"
+        href={playlist.playlistUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Full playlist on YouTube →
+      </a>
+    </div>
+  ) : null
+
+  if (soft) {
+    return (
+      <section className="sets" id="sets">
+        <div className="sets__mark" aria-hidden="true">
+          <BrandMark variant="star" className="sets__star" />
+        </div>
+
+        <div className="sets__header">
+          <div className="sets__copy">
+            <p className="section-label">02 · Sets</p>
+            <h2 className="section-title">Listen. Groove. Vibe.</h2>
+            <p className="sets__intro">
+              Afro electronic selections — Amapiano and Afro House, including
+              guest sets on other channels.
+            </p>
+          </div>
+        </div>
+
+        {genreSwitch}
+
+        <div className="sets__panel" role="tabpanel">
+          <div className="sets__panel-head">
+            <p className="sets__tagline">{playlist.tagline}</p>
+          </div>
+
+          <ul className="sets__list">
+            {visibleSets.map((set) => (
+              <li key={set.id} className="set">
+                <div className="set__meta">
+                  <p className="set__label">{set.channel}</p>
+                  <h3 className="set__title">{set.title}</h3>
+                  <p className="set__duration">{set.subtitle}</p>
+                </div>
+                <a
+                  className="set__thumb"
+                  href={`https://www.youtube.com/watch?v=${set.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Watch ${set.title} on YouTube`}
+                >
+                  <YouTubeThumb id={set.id} />
+                  <span className="set__play" aria-hidden="true" />
+                  <span className="set__watch">Watch on YouTube</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {moreBlock}
+        </div>
+
+        <div className="sets__soundcloud">
+          <div className="sets__panel-head">
+            <p className="sets__tagline">SoundCloud</p>
+            <a
+              className="sets__channel"
+              href={soundcloudEmbed.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open profile →
+            </a>
+          </div>
+          <div className="sets__sc-frame">
+            <iframe
+              title="KHWEZI K on SoundCloud"
+              allow="autoplay"
+              loading="lazy"
+              src={soundcloudEmbed.playerSrc}
+            />
+          </div>
+        </div>
+
+        <div className="sets__mixcloud">
+          <div className="sets__panel-head">
+            <div>
+              <p className="sets__tagline">EXT Radio · Guest mix</p>
+              <p className="sets__mixcloud-note">{mixcloudEmbed.note}</p>
+            </div>
+            <a
+              className="sets__channel"
+              href={`${mixcloudEmbed.showUrl}?start=${mixcloudEmbed.startSeconds}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open show →
+            </a>
+          </div>
+          <MixcloudPlayer />
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="sets" id="sets">
       <motion.div
         className="sets__mark"
         aria-hidden="true"
-        initial={soft ? false : { opacity: 0, filter: 'blur(14px)' }}
-        whileInView={
-          soft ? undefined : { opacity: 1, filter: 'blur(0px)' }
-        }
+        initial={{ opacity: 0, filter: 'blur(14px)' }}
+        whileInView={{ opacity: 1, filter: 'blur(0px)' }}
         viewport={viewport}
-        transition={{ duration: soft ? 0.5 : 1.05, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
       >
         <BrandMark variant="star" className="sets__star" />
       </motion.div>
@@ -176,10 +322,10 @@ export function Sets() {
       <div className="sets__header">
         <motion.div
           className="sets__copy"
-          initial={soft ? false : { opacity: 0, y: 28 }}
-          whileInView={soft ? undefined : { opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={viewport}
-          transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="section-label">02 · Sets</p>
           <h2 className="section-title">Listen. Groove. Vibe.</h2>
@@ -190,46 +336,17 @@ export function Sets() {
         </motion.div>
       </div>
 
-      <div className="sets__switch" role="tablist" aria-label="Genre">
-        {genres.map((genre) => {
-          const isActive = genre.key === active
-          return (
-            <button
-              key={genre.key}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              className={`sets__tab sets__tab--${genre.key} ${isActive ? 'is-active' : ''}`}
-              onClick={() => setActive(genre.key)}
-            >
-              {isActive &&
-                (soft ? (
-                  <span
-                    className={`sets__tab-bg sets__tab-bg--${genre.key}`}
-                  />
-                ) : (
-                  <motion.span
-                    className={`sets__tab-bg sets__tab-bg--${genre.key}`}
-                    layoutId="genre-tab"
-                    transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-                  />
-                ))}
-              <span className="sets__tab-label">{genre.label}</span>
-              <span className="sets__tab-count">{genre.sets.length}</span>
-            </button>
-          )
-        })}
-      </div>
+      {genreSwitch}
 
       <AnimatePresence mode="wait">
         <motion.div
           key={playlist.key}
           className="sets__panel"
           role="tabpanel"
-          initial={soft ? false : { opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={soft ? undefined : { opacity: 0, y: -16 }}
-          transition={{ duration: soft ? 0.2 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ opacity: 0, y: -16 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="sets__panel-head">
             <p className="sets__tagline">{playlist.tagline}</p>
@@ -240,11 +357,11 @@ export function Sets() {
               <motion.li
                 key={set.id}
                 className="set"
-                initial={soft ? false : { opacity: 0, y: 32 }}
-                whileInView={soft ? undefined : { opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={viewport}
                 transition={{
-                  duration: soft ? 0.45 : 0.65,
+                  duration: 0.65,
                   ease: [0.22, 1, 0.36, 1],
                   delay: Math.min(index * 0.06, 0.3),
                 }}
@@ -260,19 +377,11 @@ export function Sets() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Watch ${set.title} on YouTube`}
-                  initial={
-                    soft
-                      ? false
-                      : { opacity: 0, clipPath: 'inset(8% 8% 8% 8%)' }
-                  }
-                  whileInView={
-                    soft
-                      ? undefined
-                      : { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }
-                  }
+                  initial={{ opacity: 0, clipPath: 'inset(8% 8% 8% 8%)' }}
+                  whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
                   viewport={viewport}
                   transition={{
-                    duration: soft ? 0.45 : 0.85,
+                    duration: 0.85,
                     ease: [0.22, 1, 0.36, 1],
                     delay: Math.min(0.1 + index * 0.05, 0.35),
                   }}
@@ -285,37 +394,16 @@ export function Sets() {
             ))}
           </ul>
 
-          {hasMore && (
-            <div className="sets__more">
-              <button
-                type="button"
-                className="sets__more-btn"
-                aria-expanded={expanded}
-                onClick={() => setExpanded((value) => !value)}
-              >
-                {expanded
-                  ? 'Show less'
-                  : `See more (${playlist.sets.length - PREVIEW_COUNT})`}
-              </button>
-              <a
-                className="sets__channel"
-                href={playlist.playlistUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Full playlist on YouTube →
-              </a>
-            </div>
-          )}
+          {moreBlock}
         </motion.div>
       </AnimatePresence>
 
       <motion.div
         className="sets__soundcloud"
-        initial={soft ? false : { opacity: 0, y: 28 }}
-        whileInView={soft ? undefined : { opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={viewport}
-        transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="sets__panel-head">
           <p className="sets__tagline">SoundCloud</p>
@@ -340,10 +428,10 @@ export function Sets() {
 
       <motion.div
         className="sets__mixcloud"
-        initial={soft ? false : { opacity: 0, y: 28 }}
-        whileInView={soft ? undefined : { opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={viewport}
-        transition={{ duration: soft ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="sets__panel-head">
           <div>

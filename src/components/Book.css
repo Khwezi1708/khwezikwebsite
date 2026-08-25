@@ -7,7 +7,8 @@
 .book__panel {
   position: relative;
   width: 100%;
-  scroll-margin-top: max(var(--nav-clearance), calc(50dvh - 12rem));
+  /* Fixed margin — 50dvh here fights Safari toolbar resize and causes bounce */
+  scroll-margin-top: var(--nav-clearance);
   padding: clamp(2.5rem, 6vh, 3.5rem) clamp(1.5rem, 4vw, 2.5rem);
   background:
     radial-gradient(

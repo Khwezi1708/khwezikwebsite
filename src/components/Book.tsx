@@ -1,5 +1,10 @@
-import { useState, type FormEvent } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import {
+  useState,
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+} from 'react'
+import { motion } from 'framer-motion'
 import { contact, socials } from '../data/contact'
 import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
@@ -52,14 +57,340 @@ const initialForm: FormState = {
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
+function ContactForm({
+  form,
+  setForm,
+  status,
+  onSubmit,
+}: {
+  form: FormState
+  setForm: Dispatch<SetStateAction<FormState>>
+  status: SubmitStatus
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void
+}) {
+  return (
+    <form className="book__form" onSubmit={onSubmit}>
+      <input
+        className="book__honey"
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        value={form.website}
+        onChange={(event) =>
+          setForm((current) => ({
+            ...current,
+            website: event.target.value,
+          }))
+        }
+        aria-hidden="true"
+      />
+
+      <label className="book__field">
+        <span>Name</span>
+        <input
+          type="text"
+          name="name"
+          autoComplete="name"
+          required
+          value={form.name}
+          onChange={(event) =>
+            setForm((current) => ({
+              ...current,
+              name: event.target.value,
+            }))
+          }
+        />
+      </label>
+
+      <label className="book__field">
+        <span>Email</span>
+        <input
+          type="email"
+          name="email"
+          autoComplete="email"
+          required
+          value={form.email}
+          onChange={(event) =>
+            setForm((current) => ({
+              ...current,
+              email: event.target.value,
+            }))
+          }
+        />
+      </label>
+
+      <label className="book__field book__field--topic">
+        <span>Topic</span>
+        <select
+          name="topic"
+          required
+          value={form.topic}
+          onChange={(event) =>
+            setForm((current) => ({
+              ...current,
+              topic: event.target.value as Topic,
+            }))
+          }
+        >
+          {topics.map((topic) => (
+            <option key={topic.value} value={topic.value}>
+              {topic.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="book__field book__field--message">
+        <span>Message</span>
+        <textarea
+          name="message"
+          rows={2}
+          required
+          value={form.message}
+          onChange={(event) =>
+            setForm((current) => ({
+              ...current,
+              message: event.target.value,
+            }))
+          }
+        />
+      </label>
+
+      <button
+        type="submit"
+        className="book__submit"
+        disabled={status === 'submitting'}
+      >
+        {status === 'submitting' ? 'Sending…' : 'Send message'}
+      </button>
+
+      {status === 'success' && (
+        <p className="book__form-note" role="status">
+          Message sent to {contact.email}.
+        </p>
+      )}
+      {status === 'error' && (
+        <p className="book__form-note book__form-note--error" role="alert">
+          Couldn’t send. Email {contact.email} directly, or try again.
+        </p>
+      )}
+    </form>
+  )
+}
+
+function BookStatic({
+  form,
+  setForm,
+  status,
+  onSubmit,
+}: {
+  form: FormState
+  setForm: Dispatch<SetStateAction<FormState>>
+  status: SubmitStatus
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void
+}) {
+  return (
+    <section className="book">
+      <div className="book__panel" id="contact">
+        <p className="section-label">04 · Bookings</p>
+        <h2 className="book__title">Contact us</h2>
+        <p className="book__lede">For bookings, press and collaborations.</p>
+
+        <div className="book__sheet">
+          <div className="book__aside">
+            <p className="book__aside-label">Email</p>
+            <a className="book__aside-mail" href={`mailto:${contact.email}`}>
+              {contact.email}
+            </a>
+          </div>
+
+          <ContactForm
+            form={form}
+            setForm={setForm}
+            status={status}
+            onSubmit={onSubmit}
+          />
+        </div>
+      </div>
+
+      <Press />
+
+      <footer className="footer" id="socials">
+        <div className="footer__socials">
+          <p className="section-label">06 · Socials</p>
+          <h2 className="section-title footer__title">Stay connected.</h2>
+          <nav aria-label="Socials">
+            <ul>
+              {socials.map((social) => (
+                <li key={social.id}>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        <div className="footer__bottom">
+          <p className="footer__meta">
+            © {new Date().getFullYear()} KHWEZI K · Afro electronic music ·{' '}
+            {contact.genres}
+          </p>
+          <BrandMark variant="star" className="footer__star" />
+        </div>
+      </footer>
+    </section>
+  )
+}
+
+function BookMotion({
+  form,
+  setForm,
+  status,
+  onSubmit,
+  viewport,
+}: {
+  form: FormState
+  setForm: Dispatch<SetStateAction<FormState>>
+  status: SubmitStatus
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void
+  viewport: ReturnType<typeof useMotionProfile>['viewport']
+}) {
+  return (
+    <section className="book">
+      <motion.div
+        className="book__panel"
+        id="contact"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={viewport}
+        transition={{ duration: 0.9, ease: easeOut }}
+      >
+        <motion.p
+          className="section-label"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.55, ease: easeOut, delay: 0.05 }}
+        >
+          04 · Bookings
+        </motion.p>
+        <motion.h2
+          className="book__title"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.65, ease: easeOut, delay: 0.1 }}
+        >
+          Contact us
+        </motion.h2>
+        <motion.p
+          className="book__lede"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.6, ease: easeOut, delay: 0.16 }}
+        >
+          For bookings, press and collaborations.
+        </motion.p>
+
+        <div className="book__sheet">
+          <motion.div
+            className="book__aside"
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={viewport}
+            transition={{ duration: 0.7, ease: easeOut, delay: 0.2 }}
+          >
+            <p className="book__aside-label">Email</p>
+            <a className="book__aside-mail" href={`mailto:${contact.email}`}>
+              {contact.email}
+            </a>
+          </motion.div>
+
+          <ContactForm
+            form={form}
+            setForm={setForm}
+            status={status}
+            onSubmit={onSubmit}
+          />
+        </div>
+      </motion.div>
+
+      <Press />
+
+      <footer className="footer" id="socials">
+        <motion.div
+          className="footer__socials"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.7, ease: easeOut }}
+        >
+          <p className="section-label">06 · Socials</p>
+          <h2 className="section-title footer__title">Stay connected.</h2>
+          <nav aria-label="Socials">
+            <ul>
+              {socials.map((social, index) => (
+                <motion.li
+                  key={social.id}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={viewport}
+                  transition={{
+                    duration: 0.5,
+                    ease: easeOut,
+                    delay: 0.08 + index * 0.06,
+                  }}
+                >
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.label}
+                  </a>
+                </motion.li>
+              ))}
+            </ul>
+          </nav>
+        </motion.div>
+
+        <motion.div
+          className="footer__bottom"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={viewport}
+          transition={{ duration: 0.6, ease: easeOut, delay: 0.2 }}
+        >
+          <p className="footer__meta">
+            © {new Date().getFullYear()} KHWEZI K · Afro electronic music ·{' '}
+            {contact.genres}
+          </p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, rotate: -8 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={viewport}
+            transition={{ duration: 0.75, ease: easeOut, delay: 0.28 }}
+          >
+            <BrandMark variant="star" className="footer__star" />
+          </motion.div>
+        </motion.div>
+      </footer>
+    </section>
+  )
+}
+
 export function Book() {
   const [form, setForm] = useState<FormState>(initialForm)
   const [status, setStatus] = useState<SubmitStatus>('idle')
-  const reduceMotion = useReducedMotion()
   const { soft, viewport } = useMotionProfile()
-  const enter = <T,>(hidden: T) => (soft ? false : hidden)
-  const reveal = <T,>(shown: T) => (soft ? undefined : shown)
-
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -105,264 +436,11 @@ export function Book() {
     }
   }
 
-  return (
-    <section className="book">
-      <motion.div
-        className="book__panel"
-        id="contact"
-        initial={enter({ opacity: 0, y: 40 })}
-        whileInView={reveal({ opacity: 1, y: 0 })}
-        viewport={viewport}
-        transition={{ duration: 0.9, ease: easeOut }}
-      >
-        <motion.p
-          className="section-label"
-          initial={enter({ opacity: 0, y: 14 })}
-          whileInView={reveal({ opacity: 1, y: 0 })}
-          viewport={viewport}
-          transition={{ duration: 0.55, ease: easeOut, delay: 0.05 }}
-        >
-          04 · Bookings
-        </motion.p>
-        <motion.h2
-          className="book__title"
-          initial={enter({ opacity: 0, y: 18 })}
-          whileInView={reveal({ opacity: 1, y: 0 })}
-          viewport={viewport}
-          transition={{ duration: 0.65, ease: easeOut, delay: 0.1 }}
-        >
-          Contact us
-        </motion.h2>
-        <motion.p
-          className="book__lede"
-          initial={enter({ opacity: 0, y: 14 })}
-          whileInView={reveal({ opacity: 1, y: 0 })}
-          viewport={viewport}
-          transition={{ duration: 0.6, ease: easeOut, delay: 0.16 }}
-        >
-          For bookings, press and collaborations.
-        </motion.p>
+  const props = { form, setForm, status, onSubmit }
 
-        <div className="book__sheet">
-          <motion.div
-            className="book__aside"
-            initial={enter({ opacity: 0, x: -16 })}
-            whileInView={reveal({ opacity: 1, x: 0 })}
-            viewport={viewport}
-            transition={{ duration: soft ? 0.45 : 0.7, ease: easeOut, delay: soft ? 0.05 : 0.2 }}
-          >
-            <p className="book__aside-label">Email</p>
-            <a className="book__aside-mail" href={`mailto:${contact.email}`}>
-              {contact.email}
-            </a>
-          </motion.div>
-
-          <form className="book__form" onSubmit={onSubmit}>
-            <input
-              className="book__honey"
-              type="text"
-              name="website"
-              tabIndex={-1}
-              autoComplete="off"
-              value={form.website}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  website: event.target.value,
-                }))
-              }
-              aria-hidden="true"
-            />
-
-            <motion.label
-              className="book__field"
-              initial={enter({ opacity: 0, y: 16 })}
-              whileInView={reveal({ opacity: 1, y: 0 })}
-              viewport={viewport}
-              transition={{ duration: 0.55, ease: easeOut, delay: 0.22 }}
-            >
-              <span>Name</span>
-              <input
-                type="text"
-                name="name"
-                autoComplete="name"
-                required
-                value={form.name}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    name: event.target.value,
-                  }))
-                }
-              />
-            </motion.label>
-
-            <motion.label
-              className="book__field"
-              initial={enter({ opacity: 0, y: 16 })}
-              whileInView={reveal({ opacity: 1, y: 0 })}
-              viewport={viewport}
-              transition={{ duration: 0.55, ease: easeOut, delay: 0.28 }}
-            >
-              <span>Email</span>
-              <input
-                type="email"
-                name="email"
-                autoComplete="email"
-                required
-                value={form.email}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    email: event.target.value,
-                  }))
-                }
-              />
-            </motion.label>
-
-            <motion.label
-              className="book__field book__field--topic"
-              initial={enter({ opacity: 0, y: 16 })}
-              whileInView={reveal({ opacity: 1, y: 0 })}
-              viewport={viewport}
-              transition={{ duration: 0.55, ease: easeOut, delay: 0.31 }}
-            >
-              <span>Topic</span>
-              <select
-                name="topic"
-                required
-                value={form.topic}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    topic: event.target.value as Topic,
-                  }))
-                }
-              >
-                {topics.map((topic) => (
-                  <option key={topic.value} value={topic.value}>
-                    {topic.label}
-                  </option>
-                ))}
-              </select>
-            </motion.label>
-
-            <motion.label
-              className="book__field book__field--message"
-              initial={enter({ opacity: 0, y: 16 })}
-              whileInView={reveal({ opacity: 1, y: 0 })}
-              viewport={viewport}
-              transition={{ duration: 0.55, ease: easeOut, delay: 0.34 }}
-            >
-              <span>Message</span>
-              <textarea
-                name="message"
-                rows={2}
-                required
-                value={form.message}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    message: event.target.value,
-                  }))
-                }
-              />
-            </motion.label>
-
-            <motion.button
-              type="submit"
-              className="book__submit"
-              disabled={status === 'submitting'}
-              initial={enter({ opacity: 0, y: 12 })}
-              whileInView={reveal({ opacity: 1, y: 0 })}
-              viewport={viewport}
-              transition={{ duration: 0.55, ease: easeOut, delay: 0.4 }}
-            >
-              {status === 'submitting' ? 'Sending…' : 'Send message'}
-            </motion.button>
-
-            {status === 'success' && (
-              <p className="book__form-note" role="status">
-                Message sent to {contact.email}.
-              </p>
-            )}
-            {status === 'error' && (
-              <p className="book__form-note book__form-note--error" role="alert">
-                Couldn’t send. Email {contact.email} directly, or try again.
-              </p>
-            )}
-          </form>
-        </div>
-      </motion.div>
-
-      <Press />
-
-      <footer className="footer" id="socials">
-        <motion.div
-          className="footer__socials"
-          initial={enter({ opacity: 0, y: 24 })}
-          whileInView={reveal({ opacity: 1, y: 0 })}
-          viewport={viewport}
-          transition={{ duration: 0.7, ease: easeOut }}
-        >
-          <p className="section-label">06 · Socials</p>
-          <h2 className="section-title footer__title">Stay connected.</h2>
-          <nav aria-label="Socials">
-            <ul>
-              {socials.map((social, index) => (
-                <motion.li
-                  key={social.id}
-                  initial={enter({ opacity: 0, y: 14 })}
-                  whileInView={reveal({ opacity: 1, y: 0 })}
-                  viewport={viewport}
-                  transition={{
-                    duration: 0.5,
-                    ease: easeOut,
-                    delay: 0.08 + index * 0.06,
-                  }}
-                >
-                  <a
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {social.label}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </nav>
-        </motion.div>
-
-        <motion.div
-          className="footer__bottom"
-          initial={{ opacity: 0 }}
-          whileInView={reveal({ opacity: 1 })}
-          viewport={viewport}
-          transition={{ duration: 0.6, ease: easeOut, delay: 0.2 }}
-        >
-          <p className="footer__meta">
-            © {new Date().getFullYear()} KHWEZI K · Afro electronic music ·{' '}
-            {contact.genres}
-          </p>
-          <motion.div
-            initial={
-              reduceMotion
-                ? { opacity: 0 }
-                : { opacity: 0, scale: 0.85, rotate: -8 }
-            }
-            whileInView={
-              reduceMotion
-                ? { opacity: 1 }
-                : { opacity: 1, scale: 1, rotate: 0 }
-            }
-            viewport={viewport}
-            transition={{ duration: 0.75, ease: easeOut, delay: 0.28 }}
-          >
-            <BrandMark variant="star" className="footer__star" />
-          </motion.div>
-        </motion.div>
-      </footer>
-    </section>
+  return soft ? (
+    <BookStatic {...props} />
+  ) : (
+    <BookMotion {...props} viewport={viewport} />
   )
 }

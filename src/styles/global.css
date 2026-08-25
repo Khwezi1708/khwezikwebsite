@@ -153,6 +153,26 @@ html.is-ios-safari .hero__video {
   -webkit-transform: translateZ(0);
 }
 
+/* Heavy media: keep compositing simple while scrolling past 03+ */
+html.is-ios-safari .collab__gallery img,
+html.is-ios-safari .press__visual img,
+html.is-ios-safari .set__thumb img {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+html.is-ios-safari .sets__sc-frame,
+html.is-ios-safari .sets__mc-frame {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout paint;
+}
+
+html.is-ios-safari .about__portrait {
+  position: relative;
+  top: auto;
+}
+
 img,
 svg,
 video {
