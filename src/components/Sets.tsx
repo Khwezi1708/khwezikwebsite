@@ -462,7 +462,7 @@ export function Sets() {
         <div className="sets__panel-head">
           <div>
             <p className="sets__tagline">EXT Radio · Guest mix</p>
-            <p className="sets__mixcloud-note">{mixcloudEmbed.note}</p>
+            <MixcloudNote />
           </div>
           <a
             className="sets__channel"
