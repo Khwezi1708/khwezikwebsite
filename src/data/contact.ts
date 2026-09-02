@@ -37,8 +37,10 @@ export const pressPack = {
 } as const
 
 export const hero = {
-  /** Compressed web-friendly clip (~6 MB) */
-  videoSrc: '/video/hero.mp4',
+  /** Higher-quality clip for laptop / desktop */
+  desktopSrc: '/video/hero-desktop.mp4',
+  /** Compressed clip for phones / tablets */
+  mobileSrc: '/video/hero-mobile.mp4',
 } as const
 
 /** SoundCloud profile player (lists recent uploads). */

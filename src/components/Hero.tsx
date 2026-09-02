@@ -10,14 +10,20 @@ import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import './Hero.css'
 
-const heroSources = [hero.videoSrc] as const
+function heroClip(lite: boolean) {
+  return lite ? hero.mobileSrc : hero.desktopSrc
+}
 
 function useHeroVideo(lite: boolean) {
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [sourceIndex, setSourceIndex] = useState(0)
   const [showVideo, setShowVideo] = useState(true)
   const [videoReady, setVideoReady] = useState(false)
+  const clip = heroClip(lite)
+
+  useEffect(() => {
+    setVideoReady(false)
+  }, [clip])
 
   useEffect(() => {
     const video = videoRef.current
@@ -33,7 +39,7 @@ function useHeroVideo(lite: boolean) {
     }
 
     void play()
-  }, [showVideo, sourceIndex])
+  }, [showVideo, clip])
 
   useEffect(() => {
     const video = videoRef.current
@@ -53,14 +59,9 @@ function useHeroVideo(lite: boolean) {
     )
     observer.observe(section)
     return () => observer.disconnect()
-  }, [showVideo, sourceIndex])
+  }, [showVideo, clip])
 
   const onVideoError = () => {
-    if (sourceIndex < heroSources.length - 1) {
-      setVideoReady(false)
-      setSourceIndex((current) => current + 1)
-      return
-    }
     setShowVideo(false)
     setVideoReady(true)
   }
@@ -68,27 +69,27 @@ function useHeroVideo(lite: boolean) {
   return {
     sectionRef,
     videoRef,
-    sourceIndex,
     showVideo,
     videoReady,
     setVideoReady,
     lite,
+    clip,
     onVideoError,
   }
 }
 
 function HeroMedia({
   videoRef,
-  sourceIndex,
   showVideo,
   lite,
+  clip,
   onVideoError,
   setVideoReady,
 }: {
   videoRef: RefObject<HTMLVideoElement | null>
-  sourceIndex: number
   showVideo: boolean
   lite: boolean
+  clip: string
   onVideoError: () => void
   setVideoReady: (ready: boolean) => void
 }) {
@@ -96,10 +97,10 @@ function HeroMedia({
     <>
       {showVideo && (
         <video
-          key={heroSources[sourceIndex]}
+          key={clip}
           ref={videoRef}
           className="hero__video"
-          src={heroSources[sourceIndex]}
+          src={clip}
           muted
           loop
           playsInline
@@ -122,10 +123,10 @@ function HeroStatic() {
   const {
     sectionRef,
     videoRef,
-    sourceIndex,
     showVideo,
     videoReady,
     setVideoReady,
+    clip,
     onVideoError,
   } = useHeroVideo(lite)
 
@@ -155,7 +156,7 @@ function HeroStatic() {
       window.removeEventListener('touchmove', pauseForScroll)
       window.clearTimeout(resumeTimer)
     }
-  }, [safariIOS, showVideo, sourceIndex, videoRef, sectionRef])
+  }, [safariIOS, showVideo, clip, videoRef, sectionRef])
 
   return (
     <section
@@ -174,9 +175,9 @@ function HeroStatic() {
       <div className="hero__media" aria-hidden="true">
         <HeroMedia
           videoRef={videoRef}
-          sourceIndex={sourceIndex}
           showVideo={showVideo}
           lite={lite}
+          clip={clip}
           onVideoError={onVideoError}
           setVideoReady={setVideoReady}
         />
@@ -228,12 +229,17 @@ function HeroStatic() {
 }
 
 function HeroMotion() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const { lite } = useMotionProfile()
+  const {
+    sectionRef,
+    videoRef,
+    showVideo,
+    videoReady,
+    setVideoReady,
+    clip,
+    onVideoError,
+  } = useHeroVideo(lite)
   const reduceMotion = useReducedMotion()
-  const [sourceIndex, setSourceIndex] = useState(0)
-  const [showVideo, setShowVideo] = useState(true)
-  const [videoReady, setVideoReady] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -245,22 +251,6 @@ function HeroMotion() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0])
   const contentY = useTransform(scrollYProgress, [0, 0.45], [0, -48])
   const veilOpacity = useTransform(scrollYProgress, [0.4, 0.95], [0, 1])
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video || !showVideo) return
-    void video.play().catch(() => undefined)
-  }, [showVideo, sourceIndex])
-
-  const onVideoError = () => {
-    if (sourceIndex < heroSources.length - 1) {
-      setVideoReady(false)
-      setSourceIndex((current) => current + 1)
-      return
-    }
-    setShowVideo(false)
-    setVideoReady(true)
-  }
 
   return (
     <section
@@ -287,9 +277,9 @@ function HeroMotion() {
       >
         <HeroMedia
           videoRef={videoRef}
-          sourceIndex={sourceIndex}
           showVideo={showVideo}
-          lite={false}
+          lite={lite}
+          clip={clip}
           onVideoError={onVideoError}
           setVideoReady={setVideoReady}
         />
