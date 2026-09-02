@@ -10,7 +10,7 @@ import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import './Hero.css'
 
-const heroSources = [hero.videoSrc, hero.fallbackSrc] as const
+const heroSources = [hero.videoSrc] as const
 
 function useHeroVideo(lite: boolean) {
   const sectionRef = useRef<HTMLElement>(null)

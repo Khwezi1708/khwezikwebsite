@@ -37,10 +37,8 @@ export const pressPack = {
 } as const
 
 export const hero = {
-  /** Preferred web-friendly clip */
+  /** Compressed web-friendly clip (~6 MB) */
   videoSrc: '/video/hero.mp4',
-  /** Fallback if MP4 fails to play */
-  fallbackSrc: '/video/hero.mov',
 } as const
 
 /** SoundCloud profile player (lists recent uploads). */
