@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url'
 import ical, { type DateWithTimeZone, type VEvent } from 'node-ical'
 import type { Gig } from '../src/data/gigs'
 
-const MAX_GIGS = 8
 const moduleDir = dirname(fileURLToPath(import.meta.url))
 const OUTPUT = resolve(moduleDir, '../src/data/gigs.generated.ts')
 
@@ -167,26 +166,24 @@ function mapEvent(uid: string, event: VEvent, now: number): ParsedGig | null {
   return gig
 }
 
-function selectGigs(items: ParsedGig[]): Gig[] {
+function yearStartMs(nowMs: number) {
+  const now = new Date(nowMs)
+  return new Date(now.getFullYear(), 0, 1).getTime()
+}
+
+function selectGigs(items: ParsedGig[], nowMs: number): Gig[] {
+  const fromMs = yearStartMs(nowMs)
+
   const upcoming = items
     .filter((gig) => !gig.isPast)
     .sort((a, b) => a.startMs - b.startMs)
 
+  // Past gigs from the start of the current calendar year (newest first)
   const past = items
-    .filter((gig) => gig.isPast)
+    .filter((gig) => gig.isPast && gig.startMs >= fromMs)
     .sort((a, b) => b.startMs - a.startMs)
 
-  const selected: ParsedGig[] = []
-  for (const gig of upcoming) {
-    if (selected.length >= MAX_GIGS) break
-    selected.push(gig)
-  }
-  for (const gig of past) {
-    if (selected.length >= MAX_GIGS) break
-    selected.push(gig)
-  }
-
-  return selected.map(({ startMs: _startMs, ...gig }) => gig)
+  return [...upcoming, ...past].map(({ startMs: _startMs, ...gig }) => gig)
 }
 
 export async function fetchGigsFromIcal(url: string): Promise<Gig[]> {
@@ -200,7 +197,7 @@ export async function fetchGigsFromIcal(url: string): Promise<Gig[]> {
     if (gig) parsed.push(gig)
   }
 
-  return selectGigs(parsed)
+  return selectGigs(parsed, now)
 }
 
 function serializeGigs(gigs: Gig[]): string {
@@ -257,11 +254,77 @@ const DEMO_GIGS: Gig[] = [
   },
   {
     id: 'demo-past-1',
-    eventName: 'Durban session',
-    city: 'Durban',
+    eventName: 'Amapiano Worldwide',
+    venue: 'Basing House',
+    city: 'London',
+    country: 'UK',
+    dateLabel: 'Fri 28 Aug 2026',
+    timeLabel: '23:30',
+    isPast: true,
+  },
+  {
+    id: 'demo-past-2',
+    eventName: 'Warehouse session',
+    venue: 'Garage Noord',
+    city: 'Amsterdam',
+    country: 'NL',
+    dateLabel: 'Sat 12 Jul 2026',
+    timeLabel: '23:00',
+    isPast: true,
+  },
+  {
+    id: 'demo-past-3',
+    eventName: 'Rooftop grooves',
+    city: 'Berlin',
+    country: 'DE',
+    dateLabel: 'Fri 20 Jun 2026',
+    timeLabel: '22:00',
+    isPast: true,
+  },
+  {
+    id: 'demo-past-4',
+    eventName: 'Club night',
+    venue: 'RADION',
+    city: 'Amsterdam',
+    country: 'NL',
+    dateLabel: 'Sat 9 May 2026',
+    timeLabel: '23:30',
+    isPast: true,
+  },
+  {
+    id: 'demo-past-5',
+    eventName: 'Spring warm-up',
+    city: 'Cape Town',
     country: 'ZA',
-    dateLabel: 'Sat 14 Jun 2025',
-    timeLabel: '18:00',
+    dateLabel: 'Sat 11 Apr 2026',
+    timeLabel: '20:00',
+    isPast: true,
+  },
+  {
+    id: 'demo-past-6',
+    eventName: 'Equinox set',
+    city: 'Lisbon',
+    country: 'PT',
+    dateLabel: 'Fri 20 Mar 2026',
+    timeLabel: '23:00',
+    isPast: true,
+  },
+  {
+    id: 'demo-past-7',
+    eventName: 'Late winter session',
+    city: 'Paris',
+    country: 'FR',
+    dateLabel: 'Sat 14 Feb 2026',
+    timeLabel: '22:00',
+    isPast: true,
+  },
+  {
+    id: 'demo-past-8',
+    eventName: 'New year opener',
+    city: 'Johannesburg',
+    country: 'ZA',
+    dateLabel: 'Fri 9 Jan 2026',
+    timeLabel: '21:00',
     isPast: true,
   },
 ]

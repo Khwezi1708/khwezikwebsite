@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { gigs, type Gig } from '../data/gigs'
 import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
@@ -6,6 +7,8 @@ import './Gigs.css'
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 const viewport = { once: true, amount: 0.2 } as const
+const INITIAL_VISIBLE = 8
+const SEE_MORE_STEP = 5
 
 function TicketCell({ gig }: { gig: Gig }) {
   if (gig.ticketUrl) {
@@ -78,7 +81,7 @@ function GigRow({
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewport}
-      transition={{ duration: 0.65, ease: easeOut, delay: index * 0.05 }}
+      transition={{ duration: 0.65, ease: easeOut, delay: Math.min(index * 0.04, 0.2) }}
     >
       {content}
     </motion.li>
@@ -142,15 +145,67 @@ function GigsHeader({ soft }: { soft: boolean }) {
   )
 }
 
+function GigsMore({
+  remaining,
+  canCollapse,
+  onSeeMore,
+  onShowLess,
+}: {
+  remaining: number
+  canCollapse: boolean
+  onSeeMore: () => void
+  onShowLess: () => void
+}) {
+  if (remaining <= 0 && !canCollapse) return null
+
+  return (
+    <div className="gigs__more">
+      {remaining > 0 ? (
+        <button type="button" className="gigs__more-btn" onClick={onSeeMore}>
+          See more ({Math.min(remaining, SEE_MORE_STEP)})
+        </button>
+      ) : null}
+      {canCollapse ? (
+        <button type="button" className="gigs__more-btn" onClick={onShowLess}>
+          Show less
+        </button>
+      ) : null}
+    </div>
+  )
+}
+
 function GigsContent({ soft }: { soft: boolean }) {
+  const [visibleCount, setVisibleCount] = useState(() =>
+    Math.min(INITIAL_VISIBLE, gigs.length),
+  )
+
   const hasGigs = gigs.length > 0
+  const visibleGigs = gigs.slice(0, visibleCount)
+  const remaining = Math.max(0, gigs.length - visibleCount)
+  const canCollapse = visibleCount > INITIAL_VISIBLE
+
+  const seeMore = () => {
+    setVisibleCount((count) => Math.min(gigs.length, count + SEE_MORE_STEP))
+  }
+
+  const showLess = () => {
+    setVisibleCount(Math.min(INITIAL_VISIBLE, gigs.length))
+  }
 
   const body = hasGigs ? (
-    <ul className="gigs__list">
-      {gigs.map((gig, index) => (
-        <GigRow key={gig.id} gig={gig} soft={soft} index={index} />
-      ))}
-    </ul>
+    <>
+      <ul className="gigs__list">
+        {visibleGigs.map((gig, index) => (
+          <GigRow key={gig.id} gig={gig} soft={soft} index={index} />
+        ))}
+      </ul>
+      <GigsMore
+        remaining={remaining}
+        canCollapse={canCollapse}
+        onSeeMore={seeMore}
+        onShowLess={showLess}
+      />
+    </>
   ) : soft ? (
     <p className="gigs__empty">No gigs listed yet — check back soon.</p>
   ) : (
