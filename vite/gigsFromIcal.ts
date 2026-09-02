@@ -115,25 +115,32 @@ function isAllDay(start: Date, end: Date | undefined): boolean {
   )
 }
 
-function formatDateLabel(date: Date): string {
+function formatDateLabel(date: Date, timeZone: string): string {
   return new Intl.DateTimeFormat('en-GB', {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
     year: 'numeric',
+    timeZone,
   }).format(date)
 }
 
-function formatTimeLabel(date: Date, allDay: boolean): string {
+function formatTimeLabel(date: Date, allDay: boolean, timeZone: string): string {
   if (allDay) return 'All day'
   return new Intl.DateTimeFormat('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
+    timeZone,
   }).format(date)
 }
 
-function mapEvent(uid: string, event: VEvent, now: number): ParsedGig | null {
+function mapEvent(
+  uid: string,
+  event: VEvent,
+  now: number,
+  timeZone: string,
+): ParsedGig | null {
   if (!event.start) return null
 
   const title = asText(event.summary)?.trim()
@@ -155,8 +162,8 @@ function mapEvent(uid: string, event: VEvent, now: number): ParsedGig | null {
     eventName,
     city,
     country,
-    dateLabel: formatDateLabel(start),
-    timeLabel: formatTimeLabel(start, allDay),
+    dateLabel: formatDateLabel(start, timeZone),
+    timeLabel: formatTimeLabel(start, allDay, timeZone),
     isPast: startMs < now,
     startMs,
   }
@@ -191,9 +198,14 @@ export async function fetchGigsFromIcal(url: string): Promise<Gig[]> {
   const now = Date.now()
   const parsed: ParsedGig[] = []
 
+  const calendar = Object.values(data).find(
+    (entry) => entry && entry.type === 'VCALENDAR',
+  ) as { 'WR-TIMEZONE'?: string } | undefined
+  const timeZone = calendar?.['WR-TIMEZONE']?.trim() || 'Europe/Amsterdam'
+
   for (const [uid, entry] of Object.entries(data)) {
     if (!entry || entry.type !== 'VEVENT') continue
-    const gig = mapEvent(uid, entry, now)
+    const gig = mapEvent(uid, entry, now, timeZone)
     if (gig) parsed.push(gig)
   }
 

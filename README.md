@@ -25,7 +25,7 @@ Custom domain: **khwezik.com** (`public/CNAME`).
 
 ## Gigs calendar
 
-Public gigs are pulled from **Google Calendar** at build time (upcoming first, then past from the start of the current year). The page shows 8 at first; **See more** reveals 5 at a time, with **Show less** to collapse.
+Public gigs are pulled from **Google Calendar** at build time (upcoming first, then past from the start of the current year). Times use the calendar’s timezone (`X-WR-TIMEZONE`, e.g. Europe/Amsterdam). The page shows 8 at first; **See more** reveals 5 at a time, with **Show less** to collapse.
 
 1. Use a **gigs-only** calendar (no private booking holds).
 2. For each event:
