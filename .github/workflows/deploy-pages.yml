@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Refresh gigs from Google Calendar without a code push
+  schedule:
+    - cron: '0 6 * * *' # 06:00 UTC daily (~08:00 SAST)
 
 permissions:
   contents: read

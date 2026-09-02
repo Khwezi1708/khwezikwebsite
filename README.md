@@ -36,7 +36,7 @@ Public gigs are pulled from **Google Calendar** at build time (up to 8 entries i
 3. In calendar settings → **Integrate calendar**, copy **Secret address in iCal format** (or public iCal if the calendar is public).
 4. Set locally in `.env` (see `.env.example`) and in GitHub → **Settings → Secrets** as `GOOGLE_CALENDAR_ICAL_URL`.
 
-Gigs update on the live site when a new deploy runs (`push` to `main`).
+Gigs update on the live site when a deploy runs: `push` to `main`, manual **Actions → Deploy GitHub Pages**, or the daily scheduled rebuild (06:00 UTC).
 
 ## Assets
 
