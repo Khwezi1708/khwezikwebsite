@@ -1,11 +1,54 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { collabLooks } from '../data/collabs'
+import {
+  collabLooks,
+  type CollabLook,
+} from '../data/collabs'
 import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import './Collabs.css'
 
 const easeOut = [0.22, 1, 0.36, 1] as const
+const INSTAGRAM_EMBED_ID = 'instagram-embed-js'
+const INSTAGRAM_EMBED_SRC = 'https://www.instagram.com/embed.js'
+
+declare global {
+  interface Window {
+    instgrm?: {
+      Embeds: {
+        process: () => void
+      }
+    }
+  }
+}
+
+function processInstagramEmbeds() {
+  window.instgrm?.Embeds.process()
+}
+
+function useInstagramEmbeds(enabled: boolean) {
+  useEffect(() => {
+    if (!enabled) return
+
+    const run = () => {
+      // Instagram needs a tick after React paints the blockquotes.
+      window.setTimeout(() => processInstagramEmbeds(), 0)
+    }
+
+    const existing = document.getElementById(INSTAGRAM_EMBED_ID)
+    if (existing) {
+      run()
+      return
+    }
+
+    const script = document.createElement('script')
+    script.id = INSTAGRAM_EMBED_ID
+    script.async = true
+    script.src = INSTAGRAM_EMBED_SRC
+    script.onload = run
+    document.body.appendChild(script)
+  }, [enabled])
+}
 
 function CollabsLightbox({
   lightbox,
@@ -79,6 +122,248 @@ function CollabsLightbox({
   )
 }
 
+function InstagramPosts({
+  posts,
+  soft,
+}: {
+  posts: readonly string[]
+  soft: boolean
+}) {
+  useInstagramEmbeds(!soft && posts.length > 0)
+
+  if (posts.length === 0) return null
+
+  if (soft) {
+    return (
+      <ul className="collab__ig-links">
+        {posts.map((permalink) => (
+          <li key={permalink}>
+            <a href={permalink} target="_blank" rel="noopener noreferrer">
+              View on Instagram →
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  return (
+    <ul className="collab__ig-gallery">
+      {posts.map((permalink) => (
+        <li key={permalink} className="collab__ig-shot">
+          <blockquote
+            className="instagram-media"
+            data-instgrm-permalink={permalink}
+            data-instgrm-version="14"
+          >
+            <a href={permalink} target="_blank" rel="noopener noreferrer">
+              View this post on Instagram
+            </a>
+          </blockquote>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function CollabMedia({
+  look,
+  soft,
+  setLightbox,
+  viewport,
+}: {
+  look: CollabLook
+  soft: boolean
+  setLightbox: (value: { src: string; alt: string } | null) => void
+  viewport?: ReturnType<typeof useMotionProfile>['viewport']
+}) {
+  const images = look.images ?? []
+  const posts = look.instagramPosts ?? []
+  const hasImages = images.length > 0
+  const hasPosts = posts.length > 0
+
+  if (!hasImages && !hasPosts) return null
+
+  return (
+    <div className="collab__media">
+      {look.postsIntro ? (
+        <p className="collab__posts-intro">{look.postsIntro}</p>
+      ) : null}
+
+      {hasPosts ? <InstagramPosts posts={posts} soft={soft} /> : null}
+
+      {hasImages ? (
+        <ul className="collab__gallery">
+          {images.map((src, index) => {
+            const alt = `${look.partners} (${index + 1})`
+            if (soft) {
+              return (
+                <li key={src} className="collab__shot">
+                  <button
+                    type="button"
+                    className="collab__shot-btn"
+                    onClick={() => setLightbox({ src, alt })}
+                    aria-label={`Open image ${index + 1}`}
+                  >
+                    <img
+                      src={src}
+                      alt={alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </button>
+                </li>
+              )
+            }
+
+            return (
+              <motion.li
+                key={src}
+                className="collab__shot"
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={viewport}
+                transition={{
+                  duration: 0.75,
+                  ease: easeOut,
+                  delay: Math.min(index * 0.06, 0.3),
+                }}
+              >
+                <button
+                  type="button"
+                  className="collab__shot-btn"
+                  onClick={() => setLightbox({ src, alt })}
+                  aria-label={`Open image ${index + 1}`}
+                >
+                  <img src={src} alt={alt} loading="lazy" />
+                </button>
+              </motion.li>
+            )
+          })}
+        </ul>
+      ) : null}
+    </div>
+  )
+}
+
+function CollabCopy({
+  look,
+  lookIndex,
+  soft,
+  viewport,
+}: {
+  look: CollabLook
+  lookIndex: number
+  soft: boolean
+  viewport?: ReturnType<typeof useMotionProfile>['viewport']
+}) {
+  if (soft) {
+    return (
+      <div className="collab__copy">
+        {lookIndex === 0 ? (
+          <p className="section-label">04 · Collabs</p>
+        ) : null}
+        <h2 className="collab__title">{look.partners}</h2>
+        {look.lead ? <p className="collab__lead">{look.lead}</p> : null}
+        {look.body ? <p className="collab__body">{look.body}</p> : null}
+        {look.tagline ? (
+          <p className="collab__tagline">{look.tagline}</p>
+        ) : null}
+        {look.credits.length > 0 ? (
+          <ul className="collab__credits">
+            {look.credits.map((credit) => (
+              <li key={credit.role}>
+                <span className="collab__credit-role">{credit.role}</span>
+                <span className="collab__credit-name">{credit.name}</span>
+                {credit.handle ? (
+                  <span className="collab__credit-handle">{credit.handle}</span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    )
+  }
+
+  return (
+    <div className="collab__copy">
+      {lookIndex === 0 ? (
+        <motion.p
+          className="section-label"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.55, ease: easeOut }}
+        >
+          04 · Collabs
+        </motion.p>
+      ) : null}
+      <motion.h2
+        className="collab__title"
+        initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        viewport={viewport}
+        transition={{ duration: 0.85, ease: easeOut, delay: 0.08 }}
+      >
+        {look.partners}
+      </motion.h2>
+      {look.lead ? (
+        <motion.p
+          className="collab__lead"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.7, ease: easeOut, delay: 0.16 }}
+        >
+          {look.lead}
+        </motion.p>
+      ) : null}
+      {look.body ? (
+        <motion.p
+          className="collab__body"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.7, ease: easeOut, delay: 0.24 }}
+        >
+          {look.body}
+        </motion.p>
+      ) : null}
+      {look.tagline ? (
+        <motion.p
+          className="collab__tagline"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.65, ease: easeOut, delay: 0.28 }}
+        >
+          {look.tagline}
+        </motion.p>
+      ) : null}
+      {look.credits.length > 0 ? (
+        <motion.ul
+          className="collab__credits"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.65, ease: easeOut, delay: 0.3 }}
+        >
+          {look.credits.map((credit) => (
+            <li key={credit.role}>
+              <span className="collab__credit-role">{credit.role}</span>
+              <span className="collab__credit-name">{credit.name}</span>
+              {credit.handle ? (
+                <span className="collab__credit-handle">{credit.handle}</span>
+              ) : null}
+            </li>
+          ))}
+        </motion.ul>
+      ) : null}
+    </div>
+  )
+}
+
 function CollabsStatic({
   lightbox,
   setLightbox,
@@ -94,43 +379,8 @@ function CollabsStatic({
 
       {collabLooks.map((look, lookIndex) => (
         <article key={look.id} className="collab">
-          <div className="collab__copy">
-            {lookIndex === 0 && (
-              <p className="section-label">04 · Collabs</p>
-            )}
-            <h2 className="collab__title">{look.partners}</h2>
-            <p className="collab__lead">{look.lead}</p>
-            <p className="collab__body">{look.body}</p>
-            <ul className="collab__credits">
-              {look.credits.map((credit) => (
-                <li key={credit.role}>
-                  <span className="collab__credit-role">{credit.role}</span>
-                  <span className="collab__credit-name">{credit.name}</span>
-                  {credit.handle ? (
-                    <span className="collab__credit-handle">{credit.handle}</span>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <ul className="collab__gallery">
-            {look.images.map((src, index) => {
-              const alt = `${look.partners} (${index + 1})`
-              return (
-                <li key={src} className="collab__shot">
-                  <button
-                    type="button"
-                    className="collab__shot-btn"
-                    onClick={() => setLightbox({ src, alt })}
-                    aria-label={`Open image ${index + 1}`}
-                  >
-                    <img src={src} alt={alt} loading="lazy" decoding="async" />
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+          <CollabCopy look={look} lookIndex={lookIndex} soft />
+          <CollabMedia look={look} soft setLightbox={setLightbox} />
         </article>
       ))}
 
@@ -167,92 +417,18 @@ function CollabsMotion({
 
       {collabLooks.map((look, lookIndex) => (
         <article key={look.id} className="collab">
-          <div className="collab__copy">
-            {lookIndex === 0 && (
-              <motion.p
-                className="section-label"
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={viewport}
-                transition={{ duration: 0.55, ease: easeOut }}
-              >
-                04 · Collabs
-              </motion.p>
-            )}
-            <motion.h2
-              className="collab__title"
-              initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              viewport={viewport}
-              transition={{ duration: 0.85, ease: easeOut, delay: 0.08 }}
-            >
-              {look.partners}
-            </motion.h2>
-            <motion.p
-              className="collab__lead"
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={viewport}
-              transition={{ duration: 0.7, ease: easeOut, delay: 0.16 }}
-            >
-              {look.lead}
-            </motion.p>
-            <motion.p
-              className="collab__body"
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={viewport}
-              transition={{ duration: 0.7, ease: easeOut, delay: 0.24 }}
-            >
-              {look.body}
-            </motion.p>
-            <motion.ul
-              className="collab__credits"
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={viewport}
-              transition={{ duration: 0.65, ease: easeOut, delay: 0.3 }}
-            >
-              {look.credits.map((credit) => (
-                <li key={credit.role}>
-                  <span className="collab__credit-role">{credit.role}</span>
-                  <span className="collab__credit-name">{credit.name}</span>
-                  {credit.handle ? (
-                    <span className="collab__credit-handle">{credit.handle}</span>
-                  ) : null}
-                </li>
-              ))}
-            </motion.ul>
-          </div>
-
-          <ul className="collab__gallery">
-            {look.images.map((src, index) => {
-              const alt = `${look.partners} (${index + 1})`
-              return (
-                <motion.li
-                  key={src}
-                  className="collab__shot"
-                  initial={{ opacity: 0, y: 28 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={viewport}
-                  transition={{
-                    duration: 0.75,
-                    ease: easeOut,
-                    delay: Math.min(index * 0.06, 0.3),
-                  }}
-                >
-                  <button
-                    type="button"
-                    className="collab__shot-btn"
-                    onClick={() => setLightbox({ src, alt })}
-                    aria-label={`Open image ${index + 1}`}
-                  >
-                    <img src={src} alt={alt} loading="lazy" />
-                  </button>
-                </motion.li>
-              )
-            })}
-          </ul>
+          <CollabCopy
+            look={look}
+            lookIndex={lookIndex}
+            soft={false}
+            viewport={viewport}
+          />
+          <CollabMedia
+            look={look}
+            soft={false}
+            setLightbox={setLightbox}
+            viewport={viewport}
+          />
         </article>
       ))}
 

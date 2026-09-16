@@ -11,6 +11,10 @@ const INITIAL_VISIBLE = 8
 const SEE_MORE_STEP = 5
 
 function TicketCell({ gig }: { gig: Gig }) {
+  if (gig.isPast) {
+    return <span className="gig__tickets gig__tickets--muted">—</span>
+  }
+
   if (gig.ticketUrl) {
     return (
       <a
@@ -22,10 +26,6 @@ function TicketCell({ gig }: { gig: Gig }) {
         Tickets
       </a>
     )
-  }
-
-  if (gig.isPast) {
-    return <span className="gig__tickets gig__tickets--muted">—</span>
   }
 
   return <span className="gig__tickets gig__tickets--muted">TBA</span>

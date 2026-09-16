@@ -46,32 +46,47 @@ export function buildHomepagePrerenderHtml(): string {
     .join('\n')
 
   const collabs = collabLooks
-    .map(
-      (look) => `
+    .map((look) => {
+      const credits = look.credits
+        .map(
+          (credit) =>
+            `<li>${escapeHtml(credit.role)}: ${escapeHtml(credit.name)}${
+              credit.handle ? ` (${escapeHtml(credit.handle)})` : ''
+            }</li>`,
+        )
+        .join('\n')
+      const posts = (look.instagramPosts ?? [])
+        .map(
+          (permalink) =>
+            `<li><a href="${escapeHtml(permalink)}">View on Instagram</a></li>`,
+        )
+        .join('\n')
+
+      return `
         <article>
           <h3>${escapeHtml(look.partners)}</h3>
           <p>${escapeHtml(look.lead)}</p>
-          <p>${escapeHtml(look.body)}</p>
-          <ul>
-            ${look.credits
-              .map(
-                (credit) =>
-                  `<li>${escapeHtml(credit.role)}: ${escapeHtml(credit.name)}${
-                    credit.handle ? ` (${escapeHtml(credit.handle)})` : ''
-                  }</li>`,
-              )
-              .join('\n')}
-          </ul>
-        </article>`,
-    )
+          ${look.body ? `<p>${escapeHtml(look.body)}</p>` : ''}
+          ${look.tagline ? `<p>${escapeHtml(look.tagline)}</p>` : ''}
+          ${look.postsIntro ? `<p>${escapeHtml(look.postsIntro)}</p>` : ''}
+          ${posts ? `<ul>${posts}</ul>` : ''}
+          ${
+            look.credits.length > 0
+              ? `<ul>
+            ${credits}
+          </ul>`
+              : ''
+          }
+        </article>`
+    })
     .join('\n')
 
   const gigRows = gigs
     .map((gig) => {
-      const ticket = gig.ticketUrl
-        ? `<a href="${escapeHtml(gig.ticketUrl)}">Tickets</a>`
-        : gig.isPast
-          ? '—'
+      const ticket = gig.isPast
+        ? '—'
+        : gig.ticketUrl
+          ? `<a href="${escapeHtml(gig.ticketUrl)}">Tickets</a>`
           : 'TBA'
       const locale = [gig.city, gig.country].filter(Boolean).join(', ')
       const place = [gig.venue, locale].filter(Boolean).join(', ')
@@ -139,6 +154,14 @@ export function buildHomepagePrerenderHtml(): string {
       </p>
       ${setSections}
       <p><a href="${escapeHtml(soundcloudEmbed.profileUrl)}">KHWEZI K on SoundCloud</a></p>
+      <ul>
+        ${soundcloudEmbed.playlists
+          .map(
+            (playlist) =>
+              `<li><a href="${escapeHtml(playlist.setUrl)}">${escapeHtml(playlist.label)}</a></li>`,
+          )
+          .join('\n')}
+      </ul>
       <p><a href="${escapeHtml(mixcloudEmbed.showUrl)}?start=${mixcloudEmbed.startSeconds}">${escapeHtml(mixcloudEmbed.title)} — ${escapeHtml(mixcloudEmbed.note)}</a></p>
     </section>
 

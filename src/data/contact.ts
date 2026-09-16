@@ -43,11 +43,25 @@ export const hero = {
   mobileSrc: '/video/hero-mobile.mp4',
 } as const
 
-/** SoundCloud profile player (lists recent uploads). */
+/** SoundCloud playlist players (Amapiano + Afro House). */
 export const soundcloudEmbed = {
   profileUrl: 'https://soundcloud.com/7khwezi',
-  playerSrc:
-    'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/7khwezi&color=%23C2603F&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false',
+  playlists: [
+    {
+      key: 'amapiano',
+      label: 'Amapiano',
+      setUrl: 'https://soundcloud.com/7khwezi/sets/amapiano',
+      playerSrc:
+        'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A1866137886&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+    },
+    {
+      key: 'afrohouse',
+      label: 'Afro House',
+      setUrl: 'https://soundcloud.com/7khwezi/sets/afro-house-afro-tech',
+      playerSrc:
+        'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2253514448&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+    },
+  ],
 } as const
 
 /** Guest mix — EXT Radio / Afro Affy; KHWEZI K from 1:19:30. */

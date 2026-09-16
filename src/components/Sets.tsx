@@ -292,15 +292,22 @@ export function Sets() {
               Open profile →
             </a>
           </div>
-          <p className="sets__embed-fallback">
-            <a
-              href={soundcloudEmbed.profileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Listen on SoundCloud →
-            </a>
-          </p>
+          <div className="sets__sc-grid">
+            {soundcloudEmbed.playlists.map((playlist) => (
+              <div key={playlist.key} className="sets__sc-playlist">
+                <div className="sets__sc-playlist-head">
+                  <a
+                    className={`sets__channel sets__sc-link sets__sc-link--${playlist.key}`}
+                    href={playlist.setUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {playlist.label} →
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="sets__mixcloud">
@@ -442,13 +449,30 @@ export function Sets() {
             Open profile →
           </a>
         </div>
-        <div className="sets__sc-frame">
-          <iframe
-            title="KHWEZI K on SoundCloud"
-            allow="autoplay"
-            loading="lazy"
-            src={soundcloudEmbed.playerSrc}
-          />
+        <div className="sets__sc-grid">
+          {soundcloudEmbed.playlists.map((playlist) => (
+            <div key={playlist.key} className="sets__sc-playlist">
+              <div className="sets__sc-playlist-head">
+                <a
+                  className={`sets__channel sets__sc-link sets__sc-link--${playlist.key}`}
+                  href={playlist.setUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {playlist.label} →
+                </a>
+              </div>
+              <div className="sets__sc-frame">
+                <iframe
+                  title={`${playlist.label} on SoundCloud`}
+                  allow="autoplay; encrypted-media"
+                  loading="lazy"
+                  scrolling="no"
+                  src={playlist.playerSrc}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </motion.div>
 
