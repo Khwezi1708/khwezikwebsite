@@ -2,7 +2,6 @@
   width: 100%;
   margin: 0 auto;
   padding: clamp(2rem, 5vh, 3rem) 0 0;
-  scroll-margin-top: var(--nav-clearance);
 }
 
 .press__layout {
@@ -10,6 +9,8 @@
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: clamp(1.5rem, 4vw, 2.75rem);
   align-items: stretch;
+  /* Match Sets/Gigs/Collabs/About: land a bit further into the section. */
+  scroll-margin-top: calc(var(--nav-clearance) - 6.5rem);
 }
 
 .press__panel {

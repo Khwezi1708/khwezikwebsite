@@ -202,8 +202,8 @@ export function Press() {
 
   if (soft) {
     return (
-      <section className="press" id="press">
-        <div className="press__layout">
+      <section className="press">
+        <div className="press__layout" id="press">
           <div className="press__panel">
             <p className="section-label">06 · Press</p>
             <h2 className="section-title">Press pack</h2>
@@ -235,8 +235,8 @@ export function Press() {
   }
 
   return (
-    <section className="press" id="press">
-      <div className="press__layout">
+    <section className="press">
+      <div className="press__layout" id="press">
         <motion.div
           className="press__panel"
           initial={{ opacity: 0, y: 28 }}
