@@ -2,11 +2,12 @@
   width: min(100%, var(--maxw));
   margin: 0 auto;
   padding: 0 clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vh, 3.25rem);
-  scroll-margin-top: var(--nav-clearance);
 }
 
 .sets__header {
   display: grid;
+  /* Land past the star (and a bit of the heading stack). */
+  scroll-margin-top: calc(var(--nav-clearance) - 6.5rem);
 }
 
 .sets__copy {

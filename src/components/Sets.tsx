@@ -231,12 +231,12 @@ export function Sets() {
 
   if (soft) {
     return (
-      <section className="sets" id="sets">
+      <section className="sets">
         <div className="sets__mark" aria-hidden="true">
           <BrandMark variant="star" className="sets__star" />
         </div>
 
-        <div className="sets__header">
+        <div className="sets__header" id="sets">
           <div className="sets__copy">
             <p className="section-label">02 · Sets</p>
             <h2 className="section-title">Listen. Groove. Vibe.</h2>
@@ -340,7 +340,7 @@ export function Sets() {
   }
 
   return (
-    <section className="sets" id="sets">
+    <section className="sets">
       <motion.div
         className="sets__mark"
         aria-hidden="true"
@@ -352,7 +352,7 @@ export function Sets() {
         <BrandMark variant="star" className="sets__star" />
       </motion.div>
 
-      <div className="sets__header">
+      <div className="sets__header" id="sets">
         <motion.div
           className="sets__copy"
           initial={{ opacity: 0, y: 28 }}

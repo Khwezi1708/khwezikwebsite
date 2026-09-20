@@ -222,11 +222,11 @@ function GigsContent({ soft }: { soft: boolean }) {
 
   if (soft) {
     return (
-      <section className="gigs" id="gigs">
+      <section className="gigs">
         <div className="gigs__mark" aria-hidden="true">
           <BrandMark variant="star" className="gigs__star" />
         </div>
-        <div className="gigs__header">
+        <div className="gigs__header" id="gigs">
           <GigsHeader soft />
         </div>
         {body}
@@ -235,7 +235,7 @@ function GigsContent({ soft }: { soft: boolean }) {
   }
 
   return (
-    <section className="gigs" id="gigs">
+    <section className="gigs">
       <motion.div
         className="gigs__mark"
         aria-hidden="true"
@@ -247,7 +247,7 @@ function GigsContent({ soft }: { soft: boolean }) {
         <BrandMark variant="star" className="gigs__star" />
       </motion.div>
 
-      <div className="gigs__header">
+      <div className="gigs__header" id="gigs">
         <GigsHeader soft={false} />
       </div>
 

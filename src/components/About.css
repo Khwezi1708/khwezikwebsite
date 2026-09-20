@@ -5,7 +5,6 @@
     clamp(2rem, 5vh, 3.25rem);
   display: grid;
   gap: clamp(3rem, 8vh, 5rem);
-  scroll-margin-top: var(--nav-clearance);
 }
 
 .about__intro {
@@ -13,6 +12,8 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
+  /* Match Sets/Gigs/Collabs: land a bit further into the section. */
+  scroll-margin-top: calc(var(--nav-clearance) - 6.5rem);
 }
 
 .about__feature {

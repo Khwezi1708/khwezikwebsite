@@ -372,13 +372,17 @@ function CollabsStatic({
   setLightbox: (value: { src: string; alt: string } | null) => void
 }) {
   return (
-    <section className="collabs" id="collabs">
+    <section className="collabs">
       <div className="collabs__mark" aria-hidden="true">
         <BrandMark variant="star" className="collabs__star" />
       </div>
 
       {collabLooks.map((look, lookIndex) => (
-        <article key={look.id} className="collab">
+        <article
+          key={look.id}
+          className="collab"
+          id={lookIndex === 0 ? 'collabs' : undefined}
+        >
           <CollabCopy look={look} lookIndex={lookIndex} soft />
           <CollabMedia look={look} soft setLightbox={setLightbox} />
         </article>
@@ -403,7 +407,7 @@ function CollabsMotion({
   viewport: ReturnType<typeof useMotionProfile>['viewport']
 }) {
   return (
-    <section className="collabs" id="collabs">
+    <section className="collabs">
       <motion.div
         className="collabs__mark"
         aria-hidden="true"
@@ -416,8 +420,11 @@ function CollabsMotion({
       </motion.div>
 
       {collabLooks.map((look, lookIndex) => (
-        <article key={look.id} className="collab">
-          <CollabCopy
+        <article
+          key={look.id}
+          className="collab"
+          id={lookIndex === 0 ? 'collabs' : undefined}
+        >          <CollabCopy
             look={look}
             lookIndex={lookIndex}
             soft={false}

@@ -162,8 +162,8 @@ function AboutImageMotion({
 
 function AboutStatic() {
   return (
-    <section className="about" id="about">
-      <div className="about__intro">
+    <section className="about">
+      <div className="about__intro" id="about">
         <div className="about__copy">
           <p className="section-label">01 · About</p>
           <h2 className="about__headline">
@@ -211,8 +211,8 @@ function AboutMotion() {
   const titleScale = useTransform(scrollYProgress, [0, 1], [1, 0.88])
 
   return (
-    <section className="about" id="about" ref={sectionRef}>
-      <div className="about__intro">
+    <section className="about" ref={sectionRef}>
+      <div className="about__intro" id="about">
         <div className="about__copy">
           <motion.p
             className="section-label"
