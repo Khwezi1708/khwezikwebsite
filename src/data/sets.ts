@@ -24,6 +24,11 @@ export const genres: GenrePlaylist[] = [
       'https://www.youtube.com/playlist?list=PLfAdeXhWJ94MJVTz6vmapm_yrmBnQoTF3',
     sets: [
       {
+        id: 'FQRCqW-UL_4',
+        title: 'Amapiano Worldwide × Langa Events · Apartment 101',
+        channel: 'Amapiano Worldwide',
+      },
+      {
         id: 'fYDoVwanX0o',
         title: 'HOUSE OF YMZ · Amapiano Mix 2026',
         channel: 'YOMZANSI',
