@@ -8,6 +8,10 @@ import {
 } from './hooks/useMotionProfile'
 import { HiddenAnalytics } from './pages/HiddenAnalytics'
 import { NotFound } from './pages/NotFound'
+import {
+  scheduleScrollToLocationHash,
+  scrollToLocationHash,
+} from './lib/scrollToHash'
 import { recordPageview } from './lib/traffic'
 import './styles/global.css'
 
@@ -19,11 +23,17 @@ function PublicSite() {
   useEffect(() => {
     void recordPageview()
 
+    const cancelHashScroll = scheduleScrollToLocationHash()
+
     const onHashChange = () => {
       void recordPageview()
+      scrollToLocationHash()
     }
     window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
+    return () => {
+      cancelHashScroll()
+      window.removeEventListener('hashchange', onHashChange)
+    }
   }, [])
 
   return (
