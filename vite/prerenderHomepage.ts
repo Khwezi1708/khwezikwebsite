@@ -5,6 +5,7 @@ import { bio } from '../src/data/bio'
 import { collabLooks } from '../src/data/collabs'
 import { contact, mixcloudEmbed, socials, soundcloudEmbed } from '../src/data/contact'
 import { gigs } from '../src/data/gigs'
+import { sectionRoutes } from '../src/data/sections'
 import { genres } from '../src/data/sets'
 
 function escapeHtml(value: string) {
@@ -110,16 +111,16 @@ export function buildHomepagePrerenderHtml(): string {
 <!--prerender:start-->
 <div class="prerender-shell">
   <header>
-    <p><a href="#top">KHWEZI K</a></p>
+    <p><a href="/">KHWEZI K</a></p>
     <nav aria-label="Primary">
       <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#sets">Sets</a></li>
-        <li><a href="#gigs">Gigs</a></li>
-        <li><a href="#collabs">Collabs</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#press">Press</a></li>
-        <li><a href="#socials">Socials</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/sets">Sets</a></li>
+        <li><a href="/gigs">Gigs</a></li>
+        <li><a href="/collabs">Collabs</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/press">Press</a></li>
+        <li><a href="/socials">Socials</a></li>
       </ul>
     </nav>
   </header>
@@ -130,9 +131,9 @@ export function buildHomepagePrerenderHtml(): string {
       <h1>KHWEZI K — Afro electronic DJ for bookings</h1>
       <p>${escapeHtml(contact.tagline)}</p>
       <p>
-        <a href="#sets">Watch sets</a>
+        <a href="/sets">Watch sets</a>
         ·
-        <a href="#contact">Contact</a>
+        <a href="/contact">Contact</a>
       </p>
     </section>
 
@@ -241,6 +242,14 @@ export function prerenderHomepage(): Plugin {
       writeFileSync(resolve(hiddenDir, 'index.html'), shell)
       // SPA deep-link fallback keeps prerendered home (client router takes over)
       copyFileSync(indexHtmlPath, resolve(dist, '404.html'))
+
+      // Real paths like /sets need a physical folder on GitHub Pages (200, not 404.html).
+      for (const route of sectionRoutes) {
+        if (route.path === '/') continue
+        const dir = resolve(dist, route.path.slice(1))
+        mkdirSync(dir, { recursive: true })
+        copyFileSync(indexHtmlPath, resolve(dir, 'index.html'))
+      }
 
       console.log('prerender-homepage: injected crawlable HTML into dist/index.html')
     },

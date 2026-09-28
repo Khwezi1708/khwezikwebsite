@@ -212,16 +212,16 @@ function HeroStatic() {
           {contact.tagline}
         </motion.p>
         <div className="hero__ctas">
-          <a className="btn btn--clay" href="#sets">
+          <a className="btn btn--clay" href="/sets">
             Watch sets
           </a>
-          <a className="btn btn--ghost" href="#contact">
+          <a className="btn btn--ghost" href="/contact">
             Contact
           </a>
         </div>
       </div>
 
-      <a className="hero__scroll" href="#about" aria-label="Scroll to about">
+      <a className="hero__scroll" href="/about" aria-label="Scroll to about">
         <span />
       </a>
     </section>
@@ -328,10 +328,10 @@ function HeroMotion() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.58 }}
         >
-          <a className="btn btn--clay" href="#sets">
+          <a className="btn btn--clay" href="/sets">
             Watch sets
           </a>
-          <a className="btn btn--ghost" href="#contact">
+          <a className="btn btn--ghost" href="/contact">
             Contact
           </a>
         </motion.div>
@@ -339,7 +339,7 @@ function HeroMotion() {
 
       <motion.a
         className="hero__scroll"
-        href="#about"
+        href="/about"
         aria-label="Scroll to about"
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}

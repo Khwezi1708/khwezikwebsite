@@ -1,18 +1,9 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { navLinks } from '../data/sections'
 import { useMotionProfile } from '../hooks/useMotionProfile'
 import { BrandMark } from './BrandMark'
 import './Nav.css'
-
-const links = [
-  { href: '#about', label: 'About' },
-  { href: '#sets', label: 'Sets' },
-  { href: '#gigs', label: 'Gigs' },
-  { href: '#collabs', label: 'Collabs' },
-  { href: '#contact', label: 'Contact' },
-  { href: '#press', label: 'Press' },
-  { href: '#socials', label: 'Socials' },
-] as const
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
@@ -45,14 +36,14 @@ export function Nav() {
   if (soft) {
     return (
       <header className={`nav${solid}`}>
-        <a href="#top" className="nav__brand" aria-label="KHWEZI K home">
+        <a href="/" className="nav__brand" aria-label="KHWEZI K home">
           <BrandMark className="nav__lockup" />
           <BrandMark variant="monogram" className="nav__mono" />
         </a>
 
         <nav className="nav__links" aria-label="Primary">
-          {links.map((link) => (
-            <a key={link.href} href={link.href}>
+          {navLinks.map((link) => (
+            <a key={link.path} href={link.path}>
               {link.label}
             </a>
           ))}
@@ -69,7 +60,7 @@ export function Nav() {
       transition={{ duration: 0.7, ease: easeOut, delay: 0.2 }}
     >
       <motion.a
-        href="#top"
+        href="/"
         className="nav__brand"
         aria-label="KHWEZI K home"
         initial={{ opacity: 0 }}
@@ -81,10 +72,10 @@ export function Nav() {
       </motion.a>
 
       <nav className="nav__links" aria-label="Primary">
-        {links.map((link, index) => (
+        {navLinks.map((link, index) => (
           <motion.a
-            key={link.href}
-            href={link.href}
+            key={link.path}
+            href={link.path}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{

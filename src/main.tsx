@@ -2,17 +2,19 @@ import { MotionConfig } from 'framer-motion'
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
+import { isPublicSitePath, normalizePath } from './data/sections'
 import {
   applyMotionDocumentClasses,
   useMotionProfile,
 } from './hooks/useMotionProfile'
+import {
+  installSectionLinkInterception,
+  migrateHashToPath,
+  scheduleScrollToLocationSection,
+} from './lib/sectionNav'
+import { recordPageview } from './lib/traffic'
 import { HiddenAnalytics } from './pages/HiddenAnalytics'
 import { NotFound } from './pages/NotFound'
-import {
-  scheduleScrollToLocationHash,
-  scrollToLocationHash,
-} from './lib/scrollToHash'
-import { recordPageview } from './lib/traffic'
 import './styles/global.css'
 
 applyMotionDocumentClasses()
@@ -21,18 +23,17 @@ function PublicSite() {
   const { soft } = useMotionProfile()
 
   useEffect(() => {
+    migrateHashToPath()
     void recordPageview()
 
-    const cancelHashScroll = scheduleScrollToLocationHash()
-
-    const onHashChange = () => {
+    const cancelScroll = scheduleScrollToLocationSection('auto')
+    const cancelIntercept = installSectionLinkInterception(() => {
       void recordPageview()
-      scrollToLocationHash()
-    }
-    window.addEventListener('hashchange', onHashChange)
+    })
+
     return () => {
-      cancelHashScroll()
-      window.removeEventListener('hashchange', onHashChange)
+      cancelScroll()
+      cancelIntercept()
     }
   }, [])
 
@@ -43,17 +44,16 @@ function PublicSite() {
   )
 }
 
-const path = window.location.pathname.replace(/\/+$/, '') || '/'
+const path = normalizePath(window.location.pathname)
 
 function resolveView() {
-  switch (path) {
-    case '/':
-      return <PublicSite />
-    case '/hiddenanalytics':
-      return <HiddenAnalytics />
-    default:
-      return <NotFound />
+  if (path === '/hiddenanalytics') {
+    return <HiddenAnalytics />
   }
+  if (isPublicSitePath(path)) {
+    return <PublicSite />
+  }
+  return <NotFound />
 }
 
 createRoot(document.getElementById('root')!).render(
