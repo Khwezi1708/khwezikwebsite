@@ -65,6 +65,72 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="preload" href="/brand/monogram-cocoa.png" as="image" type="image/png" />
+
+    <!-- Critical boot styles: hide SEO prerender flash; match hero loader until React paints -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #2a1a16;
+      }
+
+      .prerender-shell {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+
+      #boot-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: grid;
+        place-items: center;
+        background: #2a1a16;
+        transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+          visibility 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      #boot-splash img {
+        width: 64px;
+        height: 64px;
+        border-radius: 12px;
+        animation: boot-pulse 1.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      }
+
+      @keyframes boot-pulse {
+        0%,
+        100% {
+          opacity: 0.55;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.04);
+        }
+      }
+
+      html.is-booted #boot-splash,
+      body:has(#root .app) #boot-splash {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      @media (max-width: 640px) {
+        #boot-splash img {
+          animation: none;
+          opacity: 0.85;
+        }
+      }
+    </style>
 
     <script type="application/ld+json">
       {
@@ -129,6 +195,9 @@
     </script>
   </head>
   <body>
+    <div id="boot-splash" aria-hidden="true">
+      <img src="/brand/monogram-cocoa.png" alt="" width="64" height="64" />
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -59,3 +59,10 @@ function resolveView() {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>{resolveView()}</StrictMode>,
 )
+
+// Hand off from HTML boot splash once the React tree has painted.
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    document.documentElement.classList.add('is-booted')
+  })
+})
