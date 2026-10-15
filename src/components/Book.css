@@ -61,6 +61,10 @@
   color: var(--coral);
 }
 
+.book__aside-label--follow {
+  margin-top: 0.85rem;
+}
+
 .book__aside-mail {
   font-weight: 600;
   font-size: clamp(0.95rem, 1.8vw, 1.1rem);

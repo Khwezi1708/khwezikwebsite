@@ -182,8 +182,9 @@ export function buildHomepagePrerenderHtml(): string {
     <section id="contact">
       <p>05 · Bookings</p>
       <h2>Contact us</h2>
-      <p>For bookings, press and collaborations.</p>
-      <p>Email: <a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></p>
+      <p>For bookings, press and partnerships.</p>
+      <p>Bookings: <a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></p>
+      <p>Partnerships: <a href="mailto:${escapeHtml(contact.partnershipsEmail)}">${escapeHtml(contact.partnershipsEmail)}</a></p>
     </section>
 
     <section id="press">

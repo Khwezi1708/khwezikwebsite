@@ -11,7 +11,7 @@ import { BrandMark } from './BrandMark'
 import { Press } from './Press'
 import './Book.css'
 
-type Topic = 'bookings' | 'press' | 'collaborations' | 'other'
+type Topic = 'bookings' | 'press' | 'partnerships' | 'other'
 
 type FormState = {
   name: string
@@ -26,7 +26,7 @@ type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error'
 const topics: { value: Topic; label: string }[] = [
   { value: 'bookings', label: 'Bookings' },
   { value: 'press', label: 'Press' },
-  { value: 'collaborations', label: 'Collaborations' },
+  { value: 'partnerships', label: 'Partnerships' },
   { value: 'other', label: 'Other' },
 ]
 
@@ -36,8 +36,8 @@ const topicSubject = (topic: Topic) => {
       return 'Bookings'
     case 'press':
       return 'Press'
-    case 'collaborations':
-      return 'Collaborations'
+    case 'partnerships':
+      return 'Partnerships'
     case 'other':
       return 'Other'
     default: {
@@ -46,6 +46,11 @@ const topicSubject = (topic: Topic) => {
     }
   }
 }
+
+const formEndpointForTopic = (topic: Topic) =>
+  topic === 'partnerships'
+    ? contact.partnershipsFormEndpoint
+    : contact.formEndpoint
 
 const initialForm: FormState = {
   name: '',
@@ -167,12 +172,13 @@ function ContactForm({
 
       {status === 'success' && (
         <p className="book__form-note" role="status">
-          Message sent to {contact.email}.
+          Message sent.
         </p>
       )}
       {status === 'error' && (
         <p className="book__form-note book__form-note--error" role="alert">
-          Couldn’t send. Email {contact.email} directly, or try again.
+          Couldn’t send. Email {contact.email} or {contact.partnershipsEmail}{' '}
+          directly, or try again.
         </p>
       )}
     </form>
@@ -195,13 +201,22 @@ function BookStatic({
       <div className="book__panel" id="contact">
         <p className="section-label">05 · Bookings</p>
         <h2 className="book__title">Contact us</h2>
-        <p className="book__lede">For bookings, press and collaborations.</p>
+        <p className="book__lede">For bookings, press and partnerships.</p>
 
         <div className="book__sheet">
           <div className="book__aside">
-            <p className="book__aside-label">Email</p>
+            <p className="book__aside-label">Bookings</p>
             <a className="book__aside-mail" href={`mailto:${contact.email}`}>
               {contact.email}
+            </a>
+            <p className="book__aside-label book__aside-label--follow">
+              Partnerships
+            </p>
+            <a
+              className="book__aside-mail"
+              href={`mailto:${contact.partnershipsEmail}`}
+            >
+              {contact.partnershipsEmail}
             </a>
           </div>
 
@@ -297,7 +312,7 @@ function BookMotion({
           viewport={viewport}
           transition={{ duration: 0.6, ease: easeOut, delay: 0.16 }}
         >
-          For bookings, press and collaborations.
+          For bookings, press and partnerships.
         </motion.p>
 
         <div className="book__sheet">
@@ -308,9 +323,18 @@ function BookMotion({
             viewport={viewport}
             transition={{ duration: 0.7, ease: easeOut, delay: 0.2 }}
           >
-            <p className="book__aside-label">Email</p>
+            <p className="book__aside-label">Bookings</p>
             <a className="book__aside-mail" href={`mailto:${contact.email}`}>
               {contact.email}
+            </a>
+            <p className="book__aside-label book__aside-label--follow">
+              Partnerships
+            </p>
+            <a
+              className="book__aside-mail"
+              href={`mailto:${contact.partnershipsEmail}`}
+            >
+              {contact.partnershipsEmail}
             </a>
           </motion.div>
 
@@ -400,7 +424,7 @@ export function Book() {
     setStatus('submitting')
 
     try {
-      const response = await fetch(contact.formEndpoint, {
+      const response = await fetch(formEndpointForTopic(form.topic), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

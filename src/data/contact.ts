@@ -1,9 +1,12 @@
 export const contact = {
-  email: 'bookings.khwezi@gmail.com',
+  email: 'bookings@khwezik.com',
+  partnershipsEmail: 'partnerships@khwezik.com',
   tagline: 'Always vibing, always grooving.',
   genres: 'Amapiano // Afro House',
-  /** FormSubmit AJAX — first live submit sends an activation email to confirm. */
-  formEndpoint: 'https://formsubmit.co/ajax/bookings.khwezi@gmail.com',
+  /** FormSubmit AJAX — first live submit to each address sends an activation email. */
+  formEndpoint: 'https://formsubmit.co/ajax/bookings@khwezik.com',
+  partnershipsFormEndpoint:
+    'https://formsubmit.co/ajax/partnerships@khwezik.com',
 } as const
 
 export const socials = [
